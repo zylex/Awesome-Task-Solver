@@ -2,6 +2,7 @@ package domain;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import dataSource.DBFacade;
 
@@ -11,10 +12,7 @@ import dataSource.DBFacade;
 /**
  * The controller communicates with the database and makes all necessary changes
  */
-/**
- * @author zylex
- * 
- */
+
 public class DomainController {
 	private Users currentUser;
 	private TaskAuction taskAuction;
@@ -141,22 +139,28 @@ public class DomainController {
 	 * @return String with a list of information about all the available Tasks.
 	 */
 	public String showAllTasks() {
-		// String.Format() aligns the text
+		getTaskAuctionFromDB(); // load from database.
+		// String.Format() aligns the text.
 		String display = String.format(
 				"|%1$-10s|%2$-10s|%3$-20s|%4$-20s|%5$-20s|%6$-15s|\n",
 				"Task ID", "User ID", "Task Name", "Created", "Deadline",
 				"Price");
 		ArrayList<Task> availableTasks = new ArrayList<Task>(taskAuction
 				.getAvailableTasks().values());
+		Collections.sort(availableTasks);
 		int size = availableTasks.size();
-		for (int i = 0; i < size; i++) {
-			Task t = availableTasks.get(i);
-			// add the information to the String to be returned.
-			display += String.format(
-					"|%1$-10s|%2$-10s|%3$-20s|%4$-20s|%5$-20s|%6$-15.2f|\n",
-					t.getTaskId(), t.getTaskOwner().getUserId(),
-					t.getTaskName(), t.getTaskCreated(), t.getDeadlineBid(),
-					t.getPrice());
+		if (size < 1)
+			display = "There are no tasks available.";
+		else {
+			for (int i = 0; i < size; i++) {
+				Task t = availableTasks.get(i);
+				// add the information to the String to be returned.
+				display += String
+						.format("|%1$-10s|%2$-10s|%3$-20s|%4$-20s|%5$-20s|%6$-15.2f|\n",
+								t.getTaskId(), t.getTaskOwner().getUserId(),
+								t.getTaskName(), t.getTaskCreated(),
+								t.getDeadlineBid(), t.getPrice());
+			}
 		}
 		return display;
 	}
@@ -166,12 +170,14 @@ public class DomainController {
 	 *         Subtasks.
 	 */
 	public String showAllSubtasks() {
-		// String.Format() aligns the text
+		getSubtaskAuctionFromDB(); // load from database.
+		// String.Format() aligns the text.
 		String display = String.format(
 				"|%1$-15s|%2$-15s|%3$-30s|%4$-20s|%5$-20s|\n", "Subtask ID",
 				"User ID", "Subtask Name", "Created", "Deadline");
 		ArrayList<Subtask> subtasks = new ArrayList<Subtask>(subtaskAuction
 				.getAvailableSubtasks().values());
+		Collections.sort(subtasks);
 		for (int i = 0; i < subtasks.size(); i++) {
 			Subtask s = subtasks.get(i);
 			// add the information to the String to be returned.
@@ -207,6 +213,7 @@ public class DomainController {
 					+ t.getCompleted() + "%" + "\nBid IDs: ";
 			ArrayList<TaskBid> taskbids = new ArrayList<TaskBid>(t
 					.getTaskBids().values());
+			Collections.sort(taskbids);
 			for (int i = 0; i < taskbids.size(); i++) {
 				display += "\n\t" + taskbids.get(i).getTaskBidId();
 			}
@@ -243,6 +250,7 @@ public class DomainController {
 					+ "\nBid IDs: ";
 			ArrayList<SubtaskBid> al = new ArrayList<SubtaskBid>(s
 					.getSubtaskBids().values());
+			Collections.sort(al);
 			for (int i = 0; i < al.size(); i++) {
 				display += "\n\t" + al.get(i).getSubtaskBidId();
 			}
@@ -286,7 +294,7 @@ public class DomainController {
 					}
 				}
 				// current user must also be the task manager of the task.
-				if (!currentUser.equals(u)) {
+				if (!(currentUser.getUserId() == u.getUserId())) {
 					result = "You are not the Manager of this Task - createSubtask";
 				} else {
 					// create object and add the provided information
@@ -337,20 +345,23 @@ public class DomainController {
 		s.setSubtaskHour(subtaskHour);
 		s.setSubtaskDeadline(deadlineBid);
 		String output = "";
-		Subtask cache = subtaskAuction.getAvailableSubtasks().get(subtaskId);
-		// make sure the Subtask exists
-		if (cache == null)
-			output = "Could not find the Subtask!";
+		Subtask check = subtaskAuction.getAvailableSubtasks().get(subtaskId);
+		// make sure the Subtask exists.
+		if (check == null) // not in cache.
+			check = db.getSubtask(subtaskId); // so load from database.
+		if (check == null) // not in database either, return error message.
+			output = "Could not find the Subtask - editSubtask";
 		else {
 			// make sure the currentUser is the Task Manager of the Subtask.
-			if (!currentUser.equals(cache.getTaskManager()))
-				output = "You are not the Manager of this Subtask!";
+			if (!(currentUser.getUserId() == check.getTaskManager().getUserId()))
+				output = "You are not the Manager of this Subtask - editSubtask";
 			else {
-				if (db.editSubtask(cache, s)) { // save is successful.
-					output = "Success! You subtask has successfully been edited.";
+				s.setVersion(check.getVersion());
+				if (db.editSubtask(s)) { // save is successful.
+					output = "Success! You subtask has successfully been edited - editSubtask";
 					getSubtaskAuctionFromDB();
 				} else {
-					output = "Fail! Could not save the subtask.";
+					output = "Fail! Could not save the subtask - editSubtask";
 				}
 			}
 		}
@@ -370,8 +381,8 @@ public class DomainController {
 	 *            End date for the auction of the Task we are trying to create.
 	 * @return String representing the status of the save.
 	 */
-	public String createTask(int taskId, String taskName,
-			String taskDescription, int price, Date deadline) {
+	public String createTask(String taskName, String taskDescription,
+			int price, Date deadline) {
 		Task t = new Task();
 		t.setTaskName(taskName);
 		t.setTaskAuctionEnded(false);
@@ -380,11 +391,15 @@ public class DomainController {
 		t.setDeadlineBid(deadline);
 		t.setTaskBids(new HashMap<Integer, TaskBid>());
 		t.setSubtasks(new HashMap<Integer, Subtask>());
+		t.setTaskOwner(currentUser);
+		t.setVersion(1);
 		String result;
 		if (db.saveNewTask(currentUser.getUserId(), t)) {
+			// save successful
 			result = "Task Successfully created - createTask";
 			getTaskAuction().getAvailableTasks().put(t.getTaskId(), t);
 		} else
+			// save unsuccessful
 			result = "Save went wrong - createTask";
 		return result;
 	}
@@ -433,14 +448,20 @@ public class DomainController {
 		if (sb == null) {
 			result = "Could not find Subtask Bid with that ID - showSubtaskBid";
 		} else {
-			result = "User Id: ";
+			String won = "";
+			if (sb.isSubtaskBidWon())
+				won = "Yes";
+			else
+				won = "No";
+			result = "Subtask Bid Id: " + sb.getSubtaskBidId()
+					+ "\nSubtask Bid Hours: " + sb.getSubtaskBidHours()
+					+ "\nSubtaskId: " + sb.getSubtaskId() + "\nBid Won: " + won;
+			result += "\nUser Id: ";
 			ArrayList<Users> u = sb.getTaskSolverGroup().getUsers();
+			Collections.sort(u);
 			for (int i = 0; i < u.size(); i++) {
 				result += "\n\t" + u.get(i).getUserId();
 			}
-			result += "\nSubtask Bid Id: " + sb.getSubtaskBidId()
-					+ "\nSubtask Bid Hours: " + sb.getSubtaskBidHours()
-					+ "\nSubtaskId: " + sb.getSubtaskId();
 		}
 		return result;
 	}
@@ -456,6 +477,7 @@ public class DomainController {
 		TaskBid tb = new TaskBid();
 		tb.setTaskBidHour(taskBidHour);
 		tb.setTaskManager(currentUser);
+		tb.setVersion(1);
 		String result; // to be returned
 		// look for the task in the cache
 		Task t = taskAuction.getAvailableTasks().get(taskId);
@@ -468,7 +490,7 @@ public class DomainController {
 		else {
 			t.getTaskBids().put(tb.getTaskBidId(), tb);
 			t = taskAuction.getAvailableTasks().get(taskId);
-			if (db.saveNewTaskBid(tb, taskId)) { // sae was successful
+			if (db.saveNewTaskBid(tb, taskId)) { // save was successful
 				result = "TaskBid successfully created - makeTaskBid";
 				t.getTaskBids().put(tb.getTaskBidId(), tb);
 			} else
@@ -489,10 +511,15 @@ public class DomainController {
 		if (tb == null) {
 			display = "Could not find a Task Bid with that ID - showTaskBid";
 		} else {
+			String won = "";
+			if (tb.isTaskBidWon())
+				won = "Yes";
+			else
+				won = "No";
 			display = "TaskBid ID: " + tb.getTaskBidId() + "\nUser ID: "
 					+ tb.getTaskManager().getUserId() + "\nOffer: "
-					+ tb.getTaskBidHour() + " Hours" + "\nTask Id: "
-					+ tb.getTaskId();
+					+ tb.getTaskBidHour() + " Hours" + "\nBid Won: " + won
+					+ "\nTask ID: " + tb.getTaskId();
 		}
 		return display;
 	}
@@ -518,8 +545,8 @@ public class DomainController {
 		String result;
 		if (db.saveNewUser(u)) { // save was successful
 			result = "User Successfully created - createUsers" + "\nUser ID: "
-					+ u.getUserId() + "\nName: " + u.getName() + "\nPassword"
-					+ u.getPassword() + "\nLocation" + u.getLocation();
+					+ u.getUserId() + "\nName: " + u.getName() + "\nPassword: "
+					+ u.getPassword() + "\nLocation: " + u.getLocation();
 		} else
 			result = "Save went wrong - createUsers";
 		return result;
@@ -534,6 +561,7 @@ public class DomainController {
 				"Security", "Name", "Password", "Location");
 		// load the list from the database.
 		ArrayList<Users> uss = db.getAllUsers();
+		Collections.sort(uss);
 		for (int i = 0; i < uss.size(); i++) {
 			Users u = uss.get(i);
 			display += String.format(
@@ -593,10 +621,8 @@ public class DomainController {
 				t = db.getTask(taskId); // so load from the database.
 			if (t == null) // not in the database either.
 				res = "Could not find the task or it is not available - selectTaskBidWinner";
-			else if (!currentUser.equals(t.getTaskOwner())) { // currentUser
-																// does not have
-																// access
-																// rights.
+			else if (currentUser.getUserId() != t.getTaskOwner().getUserId()) {
+				// currentUser does not have access rights.
 				res = "You are not the Owner of this Task - selectTaskBidWinner";
 			} else {
 				ArrayList<TaskBid> taskbids = new ArrayList<TaskBid>(t
@@ -612,22 +638,17 @@ public class DomainController {
 					res = "Task already has a winner!";
 				} else if (db.selectWinningTaskBid(tb, taskId)) { // save
 																	// successful.
-					String won = "";
-					if (tb.isTaskBidWon())
-						won = "Yes";
-					else
-						won = "No";
+					tb.setTaskBidWon(true);
+					t.setTaskAuctionEnded(true);
 					Users u = tb.getTaskManager();
 					// enter the result
 					res = "Successfully selected Task Bid " + taskBidId
 							+ " as the winning bid for Task " + taskId + "!"
 							+ "\nTask ID: " + taskId + "\nTaskBid ID: "
 							+ taskBidId + "\nHours: " + tb.getTaskBidHour()
-							+ "\nWon: " + won + "\nUser:\tID: " + u.getUserId()
-							+ "\n\t\tName: " + u.getName() + "\n\t\tLocation: "
+							+ "\nWon: Yes\nUser:\tID: " + u.getUserId()
+							+ "\n\tName: " + u.getName() + "\n\tLocation: "
 							+ u.getLocation();
-					tb.setTaskBidWon(true);
-					t.setTaskAuctionEnded(true);
 				} else { // save unsuccessful
 					res = "Something went wrong - selectTaskBidWinner";
 				}
@@ -644,7 +665,7 @@ public class DomainController {
 	 *            ID number of the SubtaskBid which we wish to select.
 	 * @return String representing the success of the save.
 	 */
-	public String selectsubtaskBidWinner(int subtaskId, int subtaskBidId) {
+	public String selectSubtaskBidWinner(int subtaskId, int subtaskBidId) {
 		String res = "";
 		// load the SubtaskBid from the database
 		SubtaskBid sb = db.getSubtaskBid(subtaskBidId);
@@ -663,11 +684,8 @@ public class DomainController {
 				s = db.getSubtask(subtaskId); // so load from the database.
 			if (s == null) // not in the database either.
 				res = "Could not find the task or it is not available - selectSubtaskBidWinner";
-			else if (!currentUser.equals(s.getTaskManager())) { // currentUser
-																// is not
-																// allowed to
-																// edit this
-																// Subtask
+			else if (currentUser.getUserId() != s.getTaskManager().getUserId()) {
+				// currentUser is not allowed to edit this Subtask
 				res = "You are not the Manager of this Subtask - selectSubtaskBidWinner";
 			} else {
 				ArrayList<SubtaskBid> subtaskbids = new ArrayList<SubtaskBid>(s
@@ -681,29 +699,24 @@ public class DomainController {
 				}
 				if (ended == true) { // already a winner
 					res = "Subtask already has a winner!";
-				} else if (db.selectWinningSubtaskBid(sb, subtaskId)) { // save successful
-					String won = "";
-					if (sb.isSubtaskBidWon())
-						won = "Yes";
-					else
-						won = "No";
+				} else if (db.selectWinningSubtaskBid(sb, subtaskId)) { // save
+																		// successful
+					// update the cache
+					sb.setSubtaskBidWon(true);
+					s.setSubtaskAuctionEnded(true);
 					ArrayList<Users> gr = sb.getTaskSolverGroup().getUsers();
 					// enter the String to return.
 					res = "Successfully selected Subtask Bid " + subtaskBidId
 							+ " as the winning bid for Subtask " + subtaskId
 							+ "!" + "\nSubtask ID: " + subtaskId
 							+ "\nSubtaskBid ID: " + subtaskBidId + "\nHours: "
-							+ sb.getSubtaskBidHours() + "\nWon: " + won
-							+ "\nUsers:\t";
+							+ sb.getSubtaskBidHours() + "\nWon: Yes\nUsers:\t";
 					for (int i = 0; i < gr.size(); i++) {
 						Users u = gr.get(i);
 						res += "ID: " + u.getUserId() + "\n\t\tName: "
 								+ u.getName() + "\n\t\tLocation: "
 								+ u.getLocation() + "\n\t\t";
 					}
-					// update the cache
-					sb.setSubtaskBidWon(true);
-					s.setSubtaskAuctionEnded(true);
 				} else { // save unsuccessful
 					res = "Something went wrong - selectSubtaskBidWinner";
 				}
@@ -725,6 +738,7 @@ public class DomainController {
 		if (tasks == null || tasks.size() < 0)
 			display = "You have no tasks.";
 		else {
+			Collections.sort(tasks);
 			for (int i = 0; i < tasks.size(); i++) {
 				Task t = tasks.get(i);
 				String assigned;
@@ -732,14 +746,157 @@ public class DomainController {
 					assigned = "Yes";
 				else
 					assigned = "No";
-				// ad the information to the returned String
+				// add the information to the returned String
 				display += String
 						.format("|%1$-10s|%2$-10s|%3$-20s|%4$-10s|%5$-10s|%6$-20s|%6$-15s|\n",
-								t.getTaskId(), t.getCompleted(),
+								t.getTaskId(), t.getCompleted() + "%",
 								t.getTaskName(), t.getTaskBids().size(),
 								assigned, t.getDeadlineBid(), t.getPrice());
 			}
 		}
 		return display;
 	}
+
+	/**
+	 * @param subtaskId
+	 *            ID number of the Subtask we are trying to solve.
+	 * @return String reflecting the success of the edit.
+	 */
+	public String solveSubtask(int subtaskId) {
+		String display = "";
+		// get subtask from cache.
+		Subtask s = subtaskAuction.getAvailableSubtasks().get(subtaskId);
+		if (s == null) // not in cache
+			s = db.getSubtask(subtaskId); // so load from database.
+		if (s == null) // not in database either, return error message.
+			return "Could not find a Subtask with that ID number - solveSubtask";
+		else if (!s.isSubtaskAuctionEnded())
+			return "That Subtask is still available for auction- solveSubtask";
+		else if (s.isSubtaskCompleted())
+			return "That Subtask has already been solved - solveSubtask";
+		else {
+			ArrayList<SubtaskBid> sbList = new ArrayList<SubtaskBid>(s
+					.getSubtaskBids().values());
+			SubtaskBid sb = null;
+			for (int i = 0; i < sbList.size(); i++) {
+				if (sbList.get(i).isSubtaskBidWon())
+					sb = sbList.get(i);
+			}
+			if (sb == null)
+				return "There is no winning SubtaskBid on this Subtask - solveSubtask";
+			else {
+				ArrayList<Users> group = sb.getTaskSolverGroup().getUsers();
+				boolean inGroup = false;
+				for (int j = 0; j < group.size(); j++) {
+					if (currentUser.getUserId() == group.get(j).getUserId())
+						inGroup = true;
+				}
+				if (!inGroup)
+					return "You are not a member of the TaskSolverGroup for this Subtask - solveSubtask";
+				else if (db.subtaskSolved(s)) {
+					s.setSubtaskCompleted(true);
+					display = "Subtask number " + subtaskId
+							+ " has been set as solved." + "\nSubtask ID: "
+							+ s.getSubtaskId() + "\nUser ID: "
+							+ s.getTaskManager().getUserId()
+							+ "\nSubtask Name: " + s.getSubtaskName()
+							+ "\nSubtask Description: "
+							+ s.getSubtaskDescription() + "\nCreated: "
+							+ s.getSubtaskCreated() + "\nDeadline: "
+							+ s.getSubtaskDeadline() + "\nCompleted: Yes"
+							+ "\nWinning Bid:\n\tSubtask Bid Id: "
+							+ sb.getSubtaskBidId() + "\n\tSubtask Bid Hours: "
+							+ sb.getSubtaskBidHours() + "\n\tSubtaskId: "
+							+ sb.getSubtaskId() + "\n TaskSolverGroup Users:";
+					for (int i = 0; i < group.size(); i++) {
+						Collections.sort(group);
+						Users u = group.get(i);
+						display += "\n\tUser ID: " + u.getUserId()
+								+ "\n\tName: " + u.getUserId()
+								+ "\n\tLocation:" + u.getLocation() + "\n";
+					}
+				} else
+					return "Save went wrong - solveSubtask";
+			}
+		}
+		return display;
+	}
+
+	/**
+	 * @param userId
+	 *            ID number of the User we are trying to edit.
+	 * @param name
+	 *            new String name of the User we are trying to edit.
+	 * @param password
+	 *            new String password of the User we are trying to edit.
+	 * @param location
+	 *            new String location of the User we are trying to edit.
+	 * @param securityLayer
+	 *            new security layer number of the edited User.
+	 * @return String reflecting the success of the edit.
+	 */
+	public String editUser(int userId, String name, String password,
+			String location, int securityLayer) {
+		String display = "";
+		Users check = db.getUser(userId);
+		if (check == null) { // user must exist
+			display = "Could not find that user - editUser";
+		} else {
+			Users u = new Users(userId, securityLayer, name, password, location);
+			if (db.editUser(u))
+				display = "Save was successful - editUser";
+			else
+				display = "Save failed -editUser";
+		}
+		return display;
+	}
+
+	/**
+	 * @param taskId
+	 *            ID number of the Task we are trying to edit.
+	 * @param taskName
+	 *            String name of the edited Task.
+	 * @param taskDescription
+	 *            String description of the edited Task.
+	 * @param price
+	 *            number of the edited Task
+	 * @param deadline
+	 *            Date deadline of the edited Task
+	 * @return String reflecting the success of the save.
+	 */
+	public String editTask(int taskId, String taskName, String taskDescription,
+			int price, Date deadline) {
+		Task t = new Task();
+		t.setTaskId(taskId);
+		t.setTaskName(taskName);
+		t.setTaskDescription(taskDescription);
+		t.setPrice(price);
+		t.setDeadlineBid(deadline);
+		t.setTaskOwner(currentUser);
+		String output = "";
+		Task check = taskAuction.getAvailableTasks().get(taskId);
+		// make sure the Task exists
+		if (check == null) // not in cache
+			check = db.getTask(taskId); // so load from the database.
+		if (check == null) // not in database either.
+			output = "Could not find the Task - editTask";
+		else {
+			// make sure the currentUser is the Task Owner of the Task.
+			if (!(currentUser.getUserId() == check.getTaskOwner().getUserId())) // not
+																				// the
+																				// owner.
+				output = "You are not the Owner of this Task - editTask";
+			else {
+				t.setVersion(check.getVersion());
+				if (db.editTask(t)) { // save is successful.
+					output = "Success! You Task has successfully been edited - editTask";
+					getTaskAuctionFromDB();
+				} else {
+					output = "Fail! Could not save the Task - editTask";
+				}
+			}
+		}
+		return output;
+	}
+
 }

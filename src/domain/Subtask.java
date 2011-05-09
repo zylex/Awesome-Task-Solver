@@ -9,8 +9,8 @@ import java.util.HashMap;
 /**
  * Class represents a Subtask which is a partition of the a task
  */
-public class Subtask {
-	private int subtaskId, subtaskHour;
+public class Subtask implements Comparable<Subtask> {
+	private int subtaskId, subtaskHour, version;
 	private Users taskManager;
 	private String subtaskName, subtaskDescription;
 	private boolean subtaskAuctionEnded, subtaskCompleted;
@@ -107,6 +107,20 @@ public class Subtask {
 		this.taskManager = taskManager;
 	}
 
+	/**
+	 * @return the version
+	 */
+	public int getVersion() {
+		return version;
+	}
+
+	/**
+	 * @param version the version to set
+	 */
+	public void setVersion(int version) {
+		this.version = version;
+	}
+
 	public boolean equals(Subtask s) {
 		return subtaskId == s.getSubtaskId()
 				&& subtaskHour == s.getSubtaskHour()
@@ -114,6 +128,11 @@ public class Subtask {
 				&& subtaskName.equals(s.getSubtaskName())
 				&& subtaskCreated.equals(s.getSubtaskCreated())
 				&& subtaskDeadline.equals(s.getSubtaskDeadline());
+	}
+
+	@Override
+	public int compareTo(Subtask s) {
+		return subtaskId - s.getSubtaskId();
 	}
 
 }

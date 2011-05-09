@@ -16,8 +16,7 @@ import domain.TaskSolverGroup;
 import domain.Users;
 
 /**
- * @author 
- * 		Anthony Arena, Jonathan Anastasiou, John Frederiksen, Daniel Spitzer
+ * @author Anthony Arena, Jonathan Anastasiou, John Frederiksen, Daniel Spitzer
  */
 /**
  * Facade is called to retrieve various objects from the database. The Facade
@@ -125,16 +124,14 @@ public class DBFacade {
 	/**
 	 * @param cache
 	 *            The Subtask that is stored in the subtaskAuction.
-	 * @param s
-	 *            The edited Subtask that we wish to save.
 	 * @return Whether the edit was successful or not.
 	 */
-	public boolean editSubtask(Subtask cache, Subtask s) {
+	public boolean editSubtask(Subtask s) {
 		Connection con = null;
 		boolean status = false;
 		try {
 			con = getConnection();
-			status = sam.editSubtask(s, cache, con);
+			status = sam.editSubtask(s, con);
 		} finally {
 			releaseConnection(con);
 		}
@@ -152,9 +149,12 @@ public class DBFacade {
 		try {
 			con = getConnection();
 			sb = sam.getSubtaskBidById(subtaskBidId, con);
-			// get the bid's TaskSolverGroup
-			sb.setTaskSolverGroup(um.getTaskSolverGroup(sb.getSubtaskBidId(),
-					con));
+			// make sure we found it.
+			if (sb != null) {
+				// get the bid's TaskSolverGroup.
+				sb.setTaskSolverGroup(um.getTaskSolverGroup(
+						sb.getSubtaskBidId(), con));
+			}
 		} finally {
 			releaseConnection(con);
 		}
@@ -302,12 +302,12 @@ public class DBFacade {
 	 *            The Subtask that has been solved.
 	 * @return Whether the save/edit was successful or not.
 	 */
-	public boolean SubtaskSolved(Subtask s) {
+	public boolean subtaskSolved(Subtask s) {
 		boolean status = false;
 		Connection con = null;
 		try {
 			con = getConnection();
-			status = sam.SubtaskSolved(s.getSubtaskId(), con);
+			status = sam.subtaskSolved(s, con);
 			// must also change it in the local cache.
 			s.setSubtaskCompleted(true);
 		} finally {
@@ -383,7 +383,8 @@ public class DBFacade {
 		Connection con = null;
 		try {
 			con = getConnection();
-			status = sam.selectWinningSubtaskBid(sb, subtaskId, con);
+			Subtask s = sam.getSubtask(subtaskId, con);
+			status = sam.selectWinningSubtaskBid(sb, s, con);
 		} finally {
 			releaseConnection(con);
 		}
@@ -419,7 +420,8 @@ public class DBFacade {
 		Connection con = null;
 		try {
 			con = getConnection();
-			status = tam.selectWinningTaskBid(taskId, tb, con);
+			Task t = tam.getTask(taskId, con);
+			status = tam.selectWinningTaskBid(t, tb, con);
 		} finally {
 			releaseConnection(con);
 		}
@@ -473,18 +475,21 @@ public class DBFacade {
 		try {
 			con = getConnection();
 			t = tam.getTask(taskId, con);
-			HashMap<Integer, TaskBid> tBids = tam.getTaskBidByTaskId(
-					t.getTaskId(), con);
-			Iterator<Integer> it = tBids.keySet().iterator();
-			while (it.hasNext()) {
-				TaskBid tb = tBids.get(it.next());
-				// must set the Task Manager of each Bid.
-				tb.setTaskManager(um.getTaskManagerByTaskBidId(
-						tb.getTaskBidId(), con));
-				tBids.put(tb.getTaskBidId(), tb);
+			if (t != null) {
+				HashMap<Integer, TaskBid> tBids = tam.getTaskBidByTaskId(
+						t.getTaskId(), con);
+				Iterator<Integer> it = tBids.keySet().iterator();
+				while (it.hasNext()) {
+					TaskBid tb = tBids.get(it.next());
+					// must set the Task Manager of each Bid.
+					tb.setTaskManager(um.getTaskManagerByTaskBidId(
+							tb.getTaskBidId(), con));
+					tBids.put(tb.getTaskBidId(), tb);
+				}
+				t.setTaskOwner(um.getTaskOwner(t.getTaskId(), con));
+				t.setTaskBids(tBids);
+				t.setSubtasks(sam.getSubtasksByTaskId(taskId, con));
 			}
-			t.setTaskOwner(um.getTaskOwner(t.getTaskId(), con));
-			t.setTaskBids(tBids);
 		} finally {
 			releaseConnection(con);
 		}
@@ -503,7 +508,8 @@ public class DBFacade {
 			con = getConnection();
 			tb = tam.getTaskBidById(taskBidId, con);
 			// get the Task Manager of the bid.
-			tb.setTaskManager(um.getTaskManagerByTaskBidId(taskBidId, con));
+			if (tb != null)
+				tb.setTaskManager(um.getTaskManagerByTaskBidId(taskBidId, con));
 		} finally {
 			releaseConnection(con);
 		}
@@ -535,15 +541,15 @@ public class DBFacade {
 	 * @return The User that is the Task Manager of the Subtask in question.
 	 */
 	public Users getTaskManagerBySubtaskId(int subtaskId) {
-		Users tm = null;
+		Users u = null;
 		Connection con = null;
 		try {
 			con = getConnection();
-			um.getTaskManagerBySubtaskId(subtaskId, con);
+			u = um.getTaskManagerBySubtaskId(subtaskId, con);
 		} finally {
 			releaseConnection(con);
 		}
-		return tm;
+		return u;
 	}
 
 	/**
@@ -562,7 +568,39 @@ public class DBFacade {
 
 	}
 
-	// === Connection specifics
+	/**
+	 * @param u
+	 *            The edited Users that we are trying to save.
+	 * @return boolean whether the save was successful or not.
+	 */
+	public boolean editUser(Users u) {
+		boolean status = false;
+		Connection con = null;
+		try {
+			con = getConnection();
+			status = um.editUser(u, con);
+		} finally {
+			releaseConnection(con);
+		}
+		return status;
+	}
+
+	/**
+	 * @param t
+	 *            The edit Task we are trying to edit.
+	 * @return boolean whether the save was successful or not.
+	 */
+	public boolean editTask(Task t) {
+		Connection con = null;
+		boolean status = false;
+		try {
+			con = getConnection();
+			status = tam.editTask(t, con);
+		} finally {
+			releaseConnection(con);
+		}
+		return status;
+	}
 
 	// --------------------Connection specifics----------------------
 	/**

@@ -8,7 +8,6 @@ import java.awt.Rectangle;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
-import javax.swing.JComboBox;
 import javax.swing.JScrollBar;
 import java.awt.Font;
 import javax.swing.JTextPane;
@@ -47,15 +46,8 @@ public class TabSolver extends JFrame {
 	private JButton createTaskButtonTO = null;
 	private JLabel taskidLabel = null;
 	private JTextField taskidjTextField = null;
-	private JLabel UserIdLabel = null;
-	private JTextField useridjTextField1 = null;
-	private JLabel locationLabel = null;
-	private JTextField LocationTextField = null;
 	private JLabel budgetLabel = null;
 	private JTextField budgetTextField = null;
-	private JComboBox currencyComboBox = null;
-	private JLabel dateinLabel = null;
-	private JTextField dateBidStartTextField1 = null;
 	private JLabel dateoutLabel1 = null;
 	private JTextField dateBidStopTextField11 = null;
 	private JLabel tasknameLabel = null;
@@ -83,17 +75,11 @@ public class TabSolver extends JFrame {
 	private JButton subtaskWinnerButtonTM = null;
 	private JButton createSubtaskButtonTM = null;
 	private JTextArea feedbackTextArea1 = null;
-	private JLabel UserIdLabel11 = null;
-	private JTextField userIdTextField1 = null;
-	private JLabel locationLabel11 = null;
-	private JTextField LocationTextField11 = null;
 	private JLabel subTaskLabel1 = null;
 	private JTextField subTskNumberTextField1 = null;
 	private JLabel TaskLabel1 = null;
 	private JTextField TskNumberTextField1 = null;
-	private JLabel dateinSubtLabel = null;
 	private JLabel dateEndSubtLabel = null;
-	private JTextField dateStartSubTextField = null;
 	private JTextField dateEndSubtTextField = null;
 	private JLabel offer1Label = null;
 	private JLabel subTskNameLabel = null;
@@ -115,16 +101,8 @@ public class TabSolver extends JFrame {
 	private JTextField subtaskBidNbTextField1111 = null;
 	private JTextArea jTextArea1 = null;
 	private JButton enterSubtskBidButtonTS = null;
-	private JLabel UserIdLabel12 = null;
-	private JTextField userIdTextField2 = null;
-	private JLabel locationLabel12 = null;
-	private JTextField LocationTextField12 = null;
 	private JLabel subtasknbLabel1111 = null;
 	private JTextField subtaskNumberTextField1111 = null;
-	private JLabel subtaskBidNbLabel11111 = null;
-	private JTextField entSubBidNbTextField = null;
-	private JLabel groupNbLabel = null;
-	private JTextField groupeNbjTextField = null;
 	private JLabel offerLabel1 = null;
 	private JTextField OfferTextField1 = null;
 	private JLabel hoursLabel2 = null;
@@ -134,7 +112,6 @@ public class TabSolver extends JFrame {
 	private JTextArea employeeNameTextArea2 = null;
 	private JTextArea feedbackTextArea11 = null;
 	private JTextArea feedbackTextArea12 = null;
-	private JTextField textField;
 	private JTextField textField_1;
 	private JTextField textField_2;
 	private JTextField textField_3;
@@ -145,7 +122,6 @@ public class TabSolver extends JFrame {
 	private JTextField textField_8;
 	private JTextField textField_9;
 	private JTextField textField_10;
-	private JTextField textField_11;
 	private JTextField textField_12;
 	private JTextField addUserToGroupTextField;
 	private JTextArea groupTextArea;
@@ -153,8 +129,8 @@ public class TabSolver extends JFrame {
 	private JTextField taskIDWinnerTextField;
 	private JTextField textField_14;
 	private JButton btnShowMyTasks;
-	private JButton btnMyTasks;
 	private JPanel adminPanel;
+	private JTextField solveSubtaskTextField;
 
 	private boolean checkForFilledFields(ArrayList<JTextComponent> components) {
 		int size = components.size();
@@ -197,7 +173,7 @@ public class TabSolver extends JFrame {
 					textPane.setText(dc.showAllUsers());
 				}
 			});
-			showAllUsersButton.setBounds(732, 322, 110, 23);
+			showAllUsersButton.setBounds(732, 322, 185, 23);
 			adminPanel.add(showAllUsersButton);
 
 			JLabel lblCreateUser = new JLabel("Create User:");
@@ -206,19 +182,19 @@ public class TabSolver extends JFrame {
 			adminPanel.add(lblCreateUser);
 
 			JLabel lblNmae = new JLabel("Name:");
-			lblNmae.setBounds(65, 34, 55, 14);
+			lblNmae.setBounds(52, 32, 78, 14);
 			adminPanel.add(lblNmae);
 
 			JLabel lblPassword = new JLabel("Password:");
-			lblPassword.setBounds(42, 59, 55, 14);
+			lblPassword.setBounds(22, 58, 87, 14);
 			adminPanel.add(lblPassword);
 
 			JLabel lblLocation = new JLabel("Location:");
-			lblLocation.setBounds(54, 84, 55, 14);
+			lblLocation.setBounds(32, 83, 106, 14);
 			adminPanel.add(lblLocation);
 
-			JLabel lblSecurityLayer = new JLabel("Security Layer:");
-			lblSecurityLayer.setBounds(25, 109, 73, 14);
+			JLabel lblSecurityLayer = new JLabel("Security:");
+			lblSecurityLayer.setBounds(33, 108, 67, 14);
 			adminPanel.add(lblSecurityLayer);
 
 			textField_1 = new JTextField();
@@ -247,23 +223,23 @@ public class TabSolver extends JFrame {
 			adminPanel.add(lblEditUser);
 
 			JLabel lblUserId = new JLabel("User Id:");
-			lblUserId.setBounds(54, 184, 46, 14);
+			lblUserId.setBounds(42, 183, 67, 14);
 			adminPanel.add(lblUserId);
 
 			JLabel lblName = new JLabel("Name:");
-			lblName.setBounds(63, 209, 46, 14);
+			lblName.setBounds(52, 208, 46, 14);
 			adminPanel.add(lblName);
 
 			JLabel lblPassword_1 = new JLabel("Password:");
-			lblPassword_1.setBounds(42, 234, 67, 14);
+			lblPassword_1.setBounds(22, 233, 88, 14);
 			adminPanel.add(lblPassword_1);
 
 			JLabel lblLocation_1 = new JLabel("Location:");
-			lblLocation_1.setBounds(51, 259, 46, 14);
+			lblLocation_1.setBounds(32, 259, 79, 14);
 			adminPanel.add(lblLocation_1);
 
-			JLabel lblSecurityLayer_1 = new JLabel("Security Layer:");
-			lblSecurityLayer_1.setBounds(25, 284, 86, 14);
+			JLabel lblSecurityLayer_1 = new JLabel("Security:");
+			lblSecurityLayer_1.setBounds(32, 285, 86, 14);
 			adminPanel.add(lblSecurityLayer_1);
 
 			textField_5 = new JTextField();
@@ -311,6 +287,24 @@ public class TabSolver extends JFrame {
 			adminPanel.add(createUserButton);
 
 			JButton editUserButton = new JButton("Ok");
+			editUserButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					ArrayList<JTextComponent> textFields = new ArrayList<JTextComponent>();
+					textFields.add(textField_5);
+					textFields.add(textField_6);
+					textFields.add(textField_7);
+					textFields.add(textField_8);
+					textFields.add(textField_9);
+					if (checkForFilledFields(textFields)) {
+						textPane.setText(dc.editUser(
+								Integer.parseInt(textField_5.getText()),
+								textField_6.getText(), textField_7.getText(),
+								textField_8.getText(),
+								Integer.parseInt(textField_9.getText())));
+					} else
+						textPane.setText("You have not filled enough fields!");
+				}
+			});
 			editUserButton.setBounds(128, 312, 110, 23);
 			adminPanel.add(editUserButton);
 
@@ -329,34 +323,25 @@ public class TabSolver extends JFrame {
 	public JPanel getTaskOwnerPanel() {
 		if (taskOwnerPanel == null) {
 			taskDescriptionLabel = new JLabel();
-			taskDescriptionLabel.setBounds(new Rectangle(417, 339, 100, 21));
+			taskDescriptionLabel.setBounds(new Rectangle(379, 337, 127, 21));
 			taskDescriptionLabel.setText("Task Description:");
 			tasknameLabel = new JLabel();
-			tasknameLabel.setBounds(new Rectangle(446, 311, 100, 21));
+			tasknameLabel.setBounds(new Rectangle(416, 311, 100, 21));
 			tasknameLabel.setText("Task Name:");
 			dateoutLabel1 = new JLabel();
-			dateoutLabel1.setBounds(new Rectangle(252, 451, 46, 17));
+			dateoutLabel1.setBounds(new Rectangle(226, 368, 66, 17));
 			dateoutLabel1.setText("Bid ends:");
-			dateinLabel = new JLabel();
-			dateinLabel.setBounds(new Rectangle(252, 423, 58, 17));
-			dateinLabel.setText("Bid starts:");
 			budgetLabel = new JLabel();
-			budgetLabel.setBounds(new Rectangle(262, 395, 58, 17));
+			budgetLabel.setBounds(new Rectangle(234, 339, 58, 17));
 			budgetLabel.setText("Budget:");
-			locationLabel = new JLabel();
-			locationLabel.setBounds(new Rectangle(252, 368, 58, 17));
-			locationLabel.setText("Location:");
-			UserIdLabel = new JLabel();
-			UserIdLabel.setBounds(new Rectangle(262, 341, 58, 17));
-			UserIdLabel.setText("UserId:");
 			taskidLabel = new JLabel();
-			taskidLabel.setBounds(new Rectangle(262, 313, 58, 17));
+			taskidLabel.setBounds(new Rectangle(240, 313, 58, 17));
 			taskidLabel.setText("TaskId:");
 			winnjLabel = new JLabel();
-			winnjLabel.setBounds(new Rectangle(9, 394, 135, 18));
+			winnjLabel.setBounds(new Rectangle(9, 394, 164, 18));
 			winnjLabel.setText("Winner Task Bid ID:");
 			taskbidnbLabel1 = new JLabel();
-			taskbidnbLabel1.setBounds(new Rectangle(39, 243, 118, 18));
+			taskbidnbLabel1.setBounds(new Rectangle(9, 243, 118, 18));
 			taskbidnbLabel1.setText(" Task Bid ID:");
 			tasknbLabel = new JLabel();
 			tasknbLabel.setBounds(new Rectangle(39, 63, 118, 18));
@@ -376,15 +361,8 @@ public class TabSolver extends JFrame {
 			taskOwnerPanel.add(getCreateTaskButtonTO(), null);
 			taskOwnerPanel.add(taskidLabel, null);
 			taskOwnerPanel.add(getTaskidjTextField(), null);
-			taskOwnerPanel.add(UserIdLabel, null);
-			taskOwnerPanel.add(getUseridjTextField1(), null);
-			taskOwnerPanel.add(locationLabel, null);
-			taskOwnerPanel.add(getLocationTextField(), null);
 			taskOwnerPanel.add(budgetLabel, null);
 			taskOwnerPanel.add(getBudgetTextField(), null);
-			taskOwnerPanel.add(getCurrencyComboBox(), null);
-			taskOwnerPanel.add(dateinLabel, null);
-			taskOwnerPanel.add(getDateBidStartTextField1(), null);
 			taskOwnerPanel.add(dateoutLabel1, null);
 			taskOwnerPanel.add(getDateBidStopTextField11(), null);
 			taskOwnerPanel.add(tasknameLabel, null);
@@ -400,13 +378,13 @@ public class TabSolver extends JFrame {
 
 			JLabel lblShowTaskBids = new JLabel("Show Task Bids:");
 			lblShowTaskBids.setFont(new Font("Tahoma", Font.PLAIN, 15));
-			lblShowTaskBids.setBounds(9, 218, 107, 14);
+			lblShowTaskBids.setBounds(9, 218, 148, 14);
 			taskOwnerPanel.add(lblShowTaskBids);
 
 			JLabel lblSelectTaskAuction = new JLabel(
 					"Select Task Auction Winner:");
 			lblSelectTaskAuction.setFont(new Font("Tahoma", Font.PLAIN, 15));
-			lblSelectTaskAuction.setBounds(9, 368, 192, 14);
+			lblSelectTaskAuction.setBounds(9, 368, 232, 14);
 			taskOwnerPanel.add(lblSelectTaskAuction);
 
 			JLabel lblCreateTask = new JLabel("Create Task:");
@@ -420,21 +398,31 @@ public class TabSolver extends JFrame {
 					displayTextArea.setText(dc.showAllTasks());
 				}
 			});
-			showAllTasksButtonTO.setBounds(771, 264, 116, 26);
+			showAllTasksButtonTO.setBounds(723, 265, 164, 26);
 			taskOwnerPanel.add(showAllTasksButtonTO);
-
-			textField = new JTextField();
-			textField.setBounds(300, 479, 76, 16);
-			taskOwnerPanel.add(textField);
-			textField.setColumns(10);
-
-			JLabel lblAuctionEnded = new JLabel("Auction Ended:");
-			lblAuctionEnded.setBounds(226, 480, 81, 14);
-			taskOwnerPanel.add(lblAuctionEnded);
 
 			JButton editTaskButtonTO = new JButton("Edit");
 			editTaskButtonTO.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					ArrayList<JTextComponent> textFields = new ArrayList<JTextComponent>();
+					textFields.add(taskidjTextField);
+					textFields.add(tasknamejTextField);
+					textFields.add(taskDescriptionTextField);
+					textFields.add(budgetTextField);
+					textFields.add(dateBidStopTextField11);
+					if (checkForFilledFields(textFields)) {
+						String display = dc.editTask(
+								Integer.parseInt(taskidjTextField.getText()),
+								tasknamejTextField.getText(),
+								taskDescriptionTextField.getText(),
+								Integer.parseInt(budgetTextField.getText()),
+								Date.valueOf(dateBidStopTextField11.getText()));
+						feedbackjTextArea.setText(display);
+						displayTextArea.setText(display);
+					} else {
+						displayTextArea.setText("Not enough values.");
+						feedbackjTextArea.setText("Not enough values.");
+					}
 				}
 			});
 			editTaskButtonTO.setBounds(622, 491, 110, 26);
@@ -449,7 +437,7 @@ public class TabSolver extends JFrame {
 			taskOwnerPanel.add(label);
 
 			taskIDWinnerTextField = new JTextField();
-			taskIDWinnerTextField.setBounds(104, 424, 90, 16);
+			taskIDWinnerTextField.setBounds(148, 414, 90, 26);
 			taskOwnerPanel.add(taskIDWinnerTextField);
 			taskIDWinnerTextField.setColumns(10);
 			taskOwnerPanel.add(getBtnShowMyTasks());
@@ -465,49 +453,40 @@ public class TabSolver extends JFrame {
 	private JPanel getTaskManagerPanel() {
 		if (taskManagerPanel == null) {
 			hoursLabel1 = new JLabel();
-			hoursLabel1.setBounds(new Rectangle(562, 360, 36, 20));
+			hoursLabel1.setBounds(new Rectangle(415, 433, 72, 20));
 			hoursLabel1.setText("Hours");
 			winnjLabel1 = new JLabel();
-			winnjLabel1.setBounds(new Rectangle(4, 453, 114, 16));
+			winnjLabel1.setBounds(new Rectangle(4, 460, 166, 16));
 			winnjLabel1.setText("Winner Subtask Bid ID:");
 			subdescpjLabel = new JLabel();
-			subdescpjLabel.setBounds(new Rectangle(420, 410, 71, 20));
+			subdescpjLabel.setBounds(new Rectangle(440, 384, 110, 20));
 			subdescpjLabel.setText("Description:");
 			subTskNameLabel = new JLabel();
-			subTskNameLabel.setBounds(new Rectangle(420, 385, 100, 20));
+			subTskNameLabel.setBounds(new Rectangle(430, 360, 129, 20));
 			subTskNameLabel.setText("Subtask Name:");
 			offer1Label = new JLabel();
-			offer1Label.setBounds(new Rectangle(420, 360, 71, 20));
+			offer1Label.setBounds(new Rectangle(225, 433, 71, 20));
 			offer1Label.setText("Budget:");
 			dateEndSubtLabel = new JLabel();
-			dateEndSubtLabel.setBounds(new Rectangle(241, 485, 71, 20));
+			dateEndSubtLabel.setBounds(new Rectangle(225, 410, 71, 20));
 			dateEndSubtLabel.setText("Bid End:");
-			dateinSubtLabel = new JLabel();
-			dateinSubtLabel.setBounds(new Rectangle(241, 460, 71, 20));
-			dateinSubtLabel.setText("Bid Start:");
 			TaskLabel1 = new JLabel();
-			TaskLabel1.setBounds(new Rectangle(241, 410, 71, 20));
+			TaskLabel1.setBounds(new Rectangle(225, 360, 71, 20));
 			TaskLabel1.setText("Task ID:");
 			subTaskLabel1 = new JLabel();
-			subTaskLabel1.setBounds(new Rectangle(241, 435, 71, 20));
+			subTaskLabel1.setBounds(new Rectangle(225, 384, 88, 20));
 			subTaskLabel1.setText("SubTask ID:");
-			locationLabel11 = new JLabel();
-			locationLabel11.setBounds(new Rectangle(241, 385, 71, 20));
-			locationLabel11.setText("Location:");
-			UserIdLabel11 = new JLabel();
-			UserIdLabel11.setBounds(new Rectangle(241, 360, 71, 20));
-			UserIdLabel11.setText("User ID:");
 			taskbidnbLabel11 = new JLabel();
-			taskbidnbLabel11.setBounds(new Rectangle(53, 125, 126, 16));
+			taskbidnbLabel11.setBounds(new Rectangle(28, 136, 126, 16));
 			taskbidnbLabel11.setText("Task Bid ID:");
 			subtaskBidNbLabel111 = new JLabel();
-			subtaskBidNbLabel111.setBounds(new Rectangle(31, 336, 114, 16));
+			subtaskBidNbLabel111.setBounds(new Rectangle(10, 336, 114, 16));
 			subtaskBidNbLabel111.setText("Subtask Bid ID:");
 			subtasknbLabel11 = new JLabel();
-			subtasknbLabel11.setBounds(new Rectangle(55, 226, 114, 16));
+			subtasknbLabel11.setBounds(new Rectangle(28, 225, 114, 16));
 			subtasknbLabel11.setText("Subtask ID:");
 			tasknbLabel1 = new JLabel();
-			tasknbLabel1.setBounds(new Rectangle(64, 46, 126, 16));
+			tasknbLabel1.setBounds(new Rectangle(44, 46, 126, 16));
 			tasknbLabel1.setText(" Task ID:");
 			taskManagerPanel = new JPanel();
 			taskManagerPanel.setLayout(null);
@@ -529,17 +508,11 @@ public class TabSolver extends JFrame {
 			taskManagerPanel.add(getSubtaskWinnerButtonTM(), null);
 			taskManagerPanel.add(getCreateSubtaskButtonTM(), null);
 			taskManagerPanel.add(getFeedbackTextArea1(), null);
-			taskManagerPanel.add(UserIdLabel11, null);
-			taskManagerPanel.add(getUserIdTextField1(), null);
-			taskManagerPanel.add(locationLabel11, null);
-			taskManagerPanel.add(getLocationTextField11(), null);
 			taskManagerPanel.add(subTaskLabel1, null);
 			taskManagerPanel.add(getSubTskNumberTextField1(), null);
 			taskManagerPanel.add(TaskLabel1, null);
 			taskManagerPanel.add(getTskNumberTextField1(), null);
-			taskManagerPanel.add(dateinSubtLabel, null);
 			taskManagerPanel.add(dateEndSubtLabel, null);
-			taskManagerPanel.add(getDateStartSubTextField(), null);
 			taskManagerPanel.add(getDateEndSubtTextField(), null);
 			taskManagerPanel.add(offer1Label, null);
 			taskManagerPanel.add(subTskNameLabel, null);
@@ -558,7 +531,7 @@ public class TabSolver extends JFrame {
 
 			JLabel lblShowTaskBids_1 = new JLabel("Show Task Bid:");
 			lblShowTaskBids_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
-			lblShowTaskBids_1.setBounds(10, 110, 108, 14);
+			lblShowTaskBids_1.setBounds(10, 110, 132, 14);
 			taskManagerPanel.add(lblShowTaskBids_1);
 
 			JLabel lblShowSubtask_1 = new JLabel("Show Subtask:");
@@ -568,12 +541,12 @@ public class TabSolver extends JFrame {
 
 			JLabel lblShowSubtaskBid_1 = new JLabel("Show Subtask Bid:");
 			lblShowSubtaskBid_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
-			lblShowSubtaskBid_1.setBounds(10, 311, 135, 14);
+			lblShowSubtaskBid_1.setBounds(10, 311, 180, 14);
 			taskManagerPanel.add(lblShowSubtaskBid_1);
 
 			JLabel lblSelectSubtaskWinner = new JLabel("Select Subtask Winner:");
 			lblSelectSubtaskWinner.setFont(new Font("Tahoma", Font.PLAIN, 15));
-			lblSelectSubtaskWinner.setBounds(10, 436, 159, 14);
+			lblSelectSubtaskWinner.setBounds(10, 436, 219, 14);
 			taskManagerPanel.add(lblSelectSubtaskWinner);
 
 			JLabel lblCreateSubtask = new JLabel("Create Subtask:");
@@ -587,7 +560,7 @@ public class TabSolver extends JFrame {
 					jTextArea.setText(dc.showAllSubtasks());
 				}
 			});
-			showAllSubtasksButtonTM.setBounds(491, 323, 124, 23);
+			showAllSubtasksButtonTM.setBounds(544, 324, 184, 23);
 			taskManagerPanel.add(showAllSubtasksButtonTM);
 
 			JButton showAllTasksButtonTM = new JButton("Show All Tasks");
@@ -596,7 +569,7 @@ public class TabSolver extends JFrame {
 					jTextArea.setText(dc.showAllTasks());
 				}
 			});
-			showAllTasksButtonTM.setBounds(369, 323, 114, 23);
+			showAllTasksButtonTM.setBounds(369, 323, 161, 23);
 			taskManagerPanel.add(showAllTasksButtonTM);
 
 			JButton editSubtaskButtonTM = new JButton("Edit");
@@ -620,12 +593,8 @@ public class TabSolver extends JFrame {
 					}
 				}
 			});
-			editSubtaskButtonTM.setBounds(420, 513, 110, 26);
+			editSubtaskButtonTM.setBounds(415, 488, 110, 26);
 			taskManagerPanel.add(editSubtaskButtonTM);
-
-			JScrollBar scrollBar = new JScrollBar();
-			scrollBar.setBounds(633, 416, 17, 79);
-			taskManagerPanel.add(scrollBar);
 
 			JScrollBar scrollBar_1 = new JScrollBar();
 			scrollBar_1.setBounds(866, 15, 17, 291);
@@ -633,19 +602,15 @@ public class TabSolver extends JFrame {
 
 			JLabel lblBidOnTask = new JLabel("Bid On Task:");
 			lblBidOnTask.setFont(new Font("Tahoma", Font.PLAIN, 15));
-			lblBidOnTask.setBounds(693, 323, 119, 26);
+			lblBidOnTask.setBounds(765, 331, 119, 26);
 			taskManagerPanel.add(lblBidOnTask);
 
 			JLabel lblTaskId = new JLabel("Task ID:");
-			lblTaskId.setBounds(736, 363, 46, 14);
+			lblTaskId.setBounds(715, 363, 76, 14);
 			taskManagerPanel.add(lblTaskId);
 
-			JLabel lblUserId_1 = new JLabel("User ID:");
-			lblUserId_1.setBounds(736, 388, 46, 14);
-			taskManagerPanel.add(lblUserId_1);
-
-			JLabel lblCompletionHours = new JLabel("Completion Hours:");
-			lblCompletionHours.setBounds(683, 413, 88, 14);
+			JLabel lblCompletionHours = new JLabel("Hours:");
+			lblCompletionHours.setBounds(725, 387, 59, 14);
 			taskManagerPanel.add(lblCompletionHours);
 
 			textField_10 = new JTextField();
@@ -653,18 +618,13 @@ public class TabSolver extends JFrame {
 			taskManagerPanel.add(textField_10);
 			textField_10.setColumns(10);
 
-			textField_11 = new JTextField();
-			textField_11.setBounds(777, 385, 86, 20);
-			taskManagerPanel.add(textField_11);
-			textField_11.setColumns(10);
-
 			textField_12 = new JTextField();
-			textField_12.setBounds(777, 410, 86, 20);
+			textField_12.setBounds(777, 385, 86, 20);
 			taskManagerPanel.add(textField_12);
 			textField_12.setColumns(10);
 
 			JButton btnOk = new JButton("Ok");
-			btnOk.setBounds(795, 445, 89, 23);
+			btnOk.setBounds(777, 409, 86, 23);
 			btnOk.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if ((textField_10.getText().equals("") || textField_12
@@ -679,15 +639,14 @@ public class TabSolver extends JFrame {
 			});
 			taskManagerPanel.add(btnOk);
 
-			JLabel label = new JLabel("Subtask ID");
-			label.setBounds(4, 488, 96, 15);
+			JLabel label = new JLabel("Subtask ID:");
+			label.setBounds(74, 488, 96, 15);
 			taskManagerPanel.add(label);
 
 			textField_14 = new JTextField();
-			textField_14.setBounds(118, 485, 75, 16);
+			textField_14.setBounds(166, 477, 95, 26);
 			taskManagerPanel.add(textField_14);
 			textField_14.setColumns(10);
-			taskManagerPanel.add(getBtnMyTasks());
 		}
 		return taskManagerPanel;
 	}
@@ -727,7 +686,7 @@ public class TabSolver extends JFrame {
 	private JTextField getTaskNumberTextField() {
 		if (taskNumberTextField == null) {
 			taskNumberTextField = new JTextField();
-			taskNumberTextField.setBounds(new Rectangle(94, 63, 90, 18));
+			taskNumberTextField.setBounds(new Rectangle(94, 55, 90, 26));
 		}
 		return taskNumberTextField;
 	}
@@ -784,7 +743,7 @@ public class TabSolver extends JFrame {
 	private JTextField getTaskBidNumberTextField1() {
 		if (taskBidNumberTextField1 == null) {
 			taskBidNumberTextField1 = new JTextField();
-			taskBidNumberTextField1.setBounds(new Rectangle(104, 243, 90, 18));
+			taskBidNumberTextField1.setBounds(new Rectangle(104, 235, 90, 26));
 		}
 		return taskBidNumberTextField1;
 	}
@@ -802,13 +761,14 @@ public class TabSolver extends JFrame {
 					if (taskBidNumberTextField11.getText().equals("")
 							|| taskIDWinnerTextField.getText().equals("")) {
 						feedbackjTextArea
-								.setText("You did not enter enough information!");
+								.setText("You did not enter enough information! selectTaskBidWinner");
 					} else {
-						feedbackjTextArea.setText(dc.selectTaskBidWinner(
-								Integer.parseInt(taskIDWinnerTextField
-										.getText()), Integer
-										.parseInt(taskBidNumberTextField11
-												.getText())));
+						feedbackjTextArea
+								.setText("Request sent - selectTaskBidWinner");
+						displayTextArea.setText(dc.selectTaskBidWinner(Integer
+								.parseInt(taskIDWinnerTextField.getText()),
+								Integer.parseInt(taskBidNumberTextField11
+										.getText())));
 					}
 				}
 			});
@@ -826,7 +786,7 @@ public class TabSolver extends JFrame {
 	private JTextField getTaskBidNumberTextField11() {
 		if (taskBidNumberTextField11 == null) {
 			taskBidNumberTextField11 = new JTextField();
-			taskBidNumberTextField11.setBounds(new Rectangle(104, 394, 90, 18));
+			taskBidNumberTextField11.setBounds(new Rectangle(148, 386, 90, 26));
 		}
 		return taskBidNumberTextField11;
 	}
@@ -841,16 +801,13 @@ public class TabSolver extends JFrame {
 			createTaskButtonTO = new JButton();
 			createTaskButtonTO.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					if (taskidjTextField.getText().equals("")
-							|| tasknamejTextField.getText().equals("")
+					if (tasknamejTextField.getText().equals("")
 							|| taskDescriptionTextField.getText().equals("")
 							|| budgetTextField.getText().equals("")
-							|| dateBidStartTextField1.getText().equals("")
 							|| dateBidStopTextField11.getText().equals("")) {
 						feedbackjTextArea.setText("Not enough values.");
 					} else {
 						feedbackjTextArea.setText(dc.createTask(
-								Integer.parseInt(taskidjTextField.getText()),
 								tasknamejTextField.getText(),
 								taskDescriptionTextField.getText(),
 								Integer.parseInt(budgetTextField.getText()),
@@ -873,35 +830,9 @@ public class TabSolver extends JFrame {
 	private JTextField getTaskidjTextField() {
 		if (taskidjTextField == null) {
 			taskidjTextField = new JTextField();
-			taskidjTextField.setBounds(new Rectangle(300, 313, 76, 16));
+			taskidjTextField.setBounds(new Rectangle(300, 303, 76, 26));
 		}
 		return taskidjTextField;
-	}
-
-	/**
-	 * This method initializes useridjTextField1
-	 * 
-	 * @return javax.swing.JTextField
-	 */
-	private JTextField getUseridjTextField1() {
-		if (useridjTextField1 == null) {
-			useridjTextField1 = new JTextField();
-			useridjTextField1.setBounds(new Rectangle(300, 341, 76, 16));
-		}
-		return useridjTextField1;
-	}
-
-	/**
-	 * This method initializes LocationTextField
-	 * 
-	 * @return javax.swing.JTextField
-	 */
-	private JTextField getLocationTextField() {
-		if (LocationTextField == null) {
-			LocationTextField = new JTextField();
-			LocationTextField.setBounds(new Rectangle(300, 368, 76, 16));
-		}
-		return LocationTextField;
 	}
 
 	/**
@@ -912,42 +843,9 @@ public class TabSolver extends JFrame {
 	private JTextField getBudgetTextField() {
 		if (budgetTextField == null) {
 			budgetTextField = new JTextField();
-			budgetTextField.setBounds(new Rectangle(300, 395, 76, 16));
+			budgetTextField.setBounds(new Rectangle(300, 332, 76, 26));
 		}
 		return budgetTextField;
-	}
-
-	/**
-	 * This method initializes currencyComboBox
-	 * 
-	 * @return javax.swing.JComboBox
-	 */
-	private JComboBox getCurrencyComboBox() {
-		if (currencyComboBox == null) {
-			currencyComboBox = new JComboBox();
-			currencyComboBox.setBounds(new Rectangle(381, 395, 54, 16));
-			String currencyDK = "DKK";
-			String currencyUSA = "USD";
-			String currencyChina = "CNY";
-			currencyComboBox.insertItemAt(currencyDK, 0);
-			currencyComboBox.insertItemAt(currencyUSA, 1);
-			currencyComboBox.insertItemAt(currencyChina, 2);
-
-		}
-		return currencyComboBox;
-	}
-
-	/**
-	 * This method initializes dateBidStartTextField1
-	 * 
-	 * @return javax.swing.JTextField
-	 */
-	private JTextField getDateBidStartTextField1() {
-		if (dateBidStartTextField1 == null) {
-			dateBidStartTextField1 = new JTextField();
-			dateBidStartTextField1.setBounds(new Rectangle(300, 423, 74, 16));
-		}
-		return dateBidStartTextField1;
 	}
 
 	/**
@@ -958,7 +856,7 @@ public class TabSolver extends JFrame {
 	private JTextField getDateBidStopTextField11() {
 		if (dateBidStopTextField11 == null) {
 			dateBidStopTextField11 = new JTextField();
-			dateBidStopTextField11.setBounds(new Rectangle(300, 451, 76, 16));
+			dateBidStopTextField11.setBounds(new Rectangle(300, 360, 76, 26));
 		}
 		return dateBidStopTextField11;
 	}
@@ -971,7 +869,7 @@ public class TabSolver extends JFrame {
 	private JTextField getTasknamejTextField() {
 		if (tasknamejTextField == null) {
 			tasknamejTextField = new JTextField();
-			tasknamejTextField.setBounds(new Rectangle(503, 311, 390, 21));
+			tasknamejTextField.setBounds(new Rectangle(503, 306, 390, 26));
 		}
 		return tasknamejTextField;
 	}
@@ -1011,34 +909,22 @@ public class TabSolver extends JFrame {
 	private JPanel getTaskSolverPanel() {
 		if (taskSolverPanel == null) {
 			hoursLabel2 = new JLabel();
-			hoursLabel2.setBounds(new Rectangle(790, 464, 34, 16));
+			hoursLabel2.setBounds(new Rectangle(800, 384, 74, 16));
 			hoursLabel2.setText("Hours");
 			offerLabel1 = new JLabel();
-			offerLabel1.setBounds(new Rectangle(658, 464, 92, 16));
+			offerLabel1.setBounds(new Rectangle(653, 384, 92, 16));
 			offerLabel1.setText("Offer:");
-			groupNbLabel = new JLabel();
-			groupNbLabel.setBounds(new Rectangle(620, 384, 92, 16));
-			groupNbLabel.setText("Group Number:");
-			subtaskBidNbLabel11111 = new JLabel();
-			subtaskBidNbLabel11111.setBounds(new Rectangle(591, 435, 103, 16));
-			subtaskBidNbLabel11111.setText("SubTask Bid Number:");
 			subtasknbLabel1111 = new JLabel();
-			subtasknbLabel1111.setBounds(new Rectangle(610, 408, 92, 16));
+			subtasknbLabel1111.setBounds(new Rectangle(571, 354, 141, 20));
 			subtasknbLabel1111.setText("SubTask Number:");
-			locationLabel12 = new JLabel();
-			locationLabel12.setBounds(new Rectangle(646, 357, 92, 16));
-			locationLabel12.setText("Location:");
-			UserIdLabel12 = new JLabel();
-			UserIdLabel12.setBounds(new Rectangle(658, 333, 92, 16));
-			UserIdLabel12.setText("UserId:");
 			subtaskBidNbLabel1111 = new JLabel();
-			subtaskBidNbLabel1111.setBounds(new Rectangle(8, 433, 121, 20));
-			subtaskBidNbLabel1111.setText("SubTask Bid Number:");
+			subtaskBidNbLabel1111.setBounds(new Rectangle(6, 342, 121, 20));
+			subtaskBidNbLabel1111.setText("SubTask Bid ID:");
 			subtasknbLabel111 = new JLabel();
-			subtasknbLabel111.setBounds(new Rectangle(29, 247, 99, 20));
-			subtasknbLabel111.setText("SubTask Number:");
+			subtasknbLabel111.setBounds(new Rectangle(18, 246, 129, 20));
+			subtasknbLabel111.setText("SubTask ID:");
 			tasknbLabel11 = new JLabel();
-			tasknbLabel11.setBounds(new Rectangle(52, 54, 86, 20));
+			tasknbLabel11.setBounds(new Rectangle(16, 53, 99, 20));
 			tasknbLabel11.setText("Task Number:");
 			taskSolverPanel = new JPanel();
 			taskSolverPanel.setLayout(null);
@@ -1053,16 +939,8 @@ public class TabSolver extends JFrame {
 			taskSolverPanel.add(getSubtaskBidNbTextField1111(), null);
 			taskSolverPanel.add(getJTextArea1(), null);
 			taskSolverPanel.add(getEnterSubtskBidButtonTS(), null);
-			taskSolverPanel.add(UserIdLabel12, null);
-			taskSolverPanel.add(getUserIdTextField2(), null);
-			taskSolverPanel.add(locationLabel12, null);
-			taskSolverPanel.add(getLocationTextField12(), null);
 			taskSolverPanel.add(subtasknbLabel1111, null);
 			taskSolverPanel.add(getSubtaskNumberTextField1111(), null);
-			taskSolverPanel.add(subtaskBidNbLabel11111, null);
-			taskSolverPanel.add(getEntSubBidNbTextField(), null);
-			taskSolverPanel.add(groupNbLabel, null);
-			taskSolverPanel.add(getGroupeNbjTextField(), null);
 			taskSolverPanel.add(offerLabel1, null);
 			taskSolverPanel.add(getOfferTextField1(), null);
 			taskSolverPanel.add(hoursLabel2, null);
@@ -1070,12 +948,12 @@ public class TabSolver extends JFrame {
 
 			JLabel lblEnterSubtaskBid = new JLabel("Enter Subtask Bid:");
 			lblEnterSubtaskBid.setFont(new Font("Tahoma", Font.PLAIN, 15));
-			lblEnterSubtaskBid.setBounds(571, 306, 141, 14);
+			lblEnterSubtaskBid.setBounds(571, 335, 141, 14);
 			taskSolverPanel.add(lblEnterSubtaskBid);
 
 			JLabel lblShowSubtaskBid = new JLabel("Show Subtask Bid:");
 			lblShowSubtaskBid.setFont(new Font("Tahoma", Font.PLAIN, 15));
-			lblShowSubtaskBid.setBounds(10, 409, 119, 14);
+			lblShowSubtaskBid.setBounds(8, 319, 199, 14);
 			taskSolverPanel.add(lblShowSubtaskBid);
 
 			JLabel lblShowSubtask = new JLabel("Show Subtask:");
@@ -1094,7 +972,7 @@ public class TabSolver extends JFrame {
 					jTextArea1.setText(dc.showAllSubtasks());
 				}
 			});
-			showAllSubtasksTS.setBounds(750, 284, 129, 23);
+			showAllSubtasksTS.setBounds(712, 293, 167, 23);
 			taskSolverPanel.add(showAllSubtasksTS);
 
 			JButton editSubtaskButtonTS = new JButton("Edit");
@@ -1102,7 +980,7 @@ public class TabSolver extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 				}
 			});
-			editSubtaskButtonTS.setBounds(610, 491, 110, 29);
+			editSubtaskButtonTS.setBounds(624, 412, 110, 29);
 			taskSolverPanel.add(editSubtaskButtonTS);
 
 			JScrollBar scrollBar = new JScrollBar();
@@ -1114,7 +992,7 @@ public class TabSolver extends JFrame {
 			taskSolverPanel.add(textArea);
 
 			addUserToGroupTextField = new JTextField();
-			addUserToGroupTextField.setBounds(219, 333, 126, 18);
+			addUserToGroupTextField.setBounds(219, 335, 126, 27);
 			taskSolverPanel.add(addUserToGroupTextField);
 			addUserToGroupTextField.setColumns(10);
 
@@ -1135,6 +1013,32 @@ public class TabSolver extends JFrame {
 			taskSolverPanel.add(addUserToGroupButton);
 			taskSolverPanel.add(getGroupTextArea());
 			taskSolverPanel.add(getNewGroupButton());
+
+			JLabel solveSubtaskLabel = new JLabel("Solve Subtask:");
+			solveSubtaskLabel.setBounds(12, 412, 125, 15);
+			taskSolverPanel.add(solveSubtaskLabel);
+
+			JLabel solveSubtaskIDLabel = new JLabel("Subtask ID:");
+			solveSubtaskIDLabel.setBounds(12, 436, 88, 15);
+			taskSolverPanel.add(solveSubtaskIDLabel);
+
+			solveSubtaskTextField = new JTextField();
+			solveSubtaskTextField.setBounds(93, 433, 99, 20);
+			taskSolverPanel.add(solveSubtaskTextField);
+			solveSubtaskTextField.setColumns(10);
+
+			JButton solveSubtaskButton = new JButton("Solve");
+			solveSubtaskButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					if (solveSubtaskTextField.getText().equals(""))
+						jTextArea1.setText("Error not enough values!");
+					else
+						jTextArea1.setText(dc.solveSubtask(Integer
+								.parseInt(solveSubtaskTextField.getText())));
+				}
+			});
+			solveSubtaskButton.setBounds(20, 460, 117, 25);
+			taskSolverPanel.add(solveSubtaskButton);
 		}
 		return taskSolverPanel;
 	}
@@ -1147,7 +1051,7 @@ public class TabSolver extends JFrame {
 	private JPanel getHrPanel() {
 		if (hrPanel == null) {
 			employeenmejLabel = new JLabel();
-			employeenmejLabel.setBounds(new Rectangle(20, 62, 98, 20));
+			employeenmejLabel.setBounds(new Rectangle(20, 62, 141, 20));
 			employeenmejLabel.setText("Employee Name:");
 			hrPanel = new JPanel();
 			hrPanel.setLayout(null);
@@ -1204,7 +1108,7 @@ public class TabSolver extends JFrame {
 	private JTextField getTaskNumberTextField1() {
 		if (taskNumberTextField1 == null) {
 			taskNumberTextField1 = new JTextField();
-			taskNumberTextField1.setBounds(new Rectangle(118, 46, 72, 16));
+			taskNumberTextField1.setBounds(new Rectangle(118, 36, 95, 26));
 		}
 		return taskNumberTextField1;
 	}
@@ -1271,7 +1175,7 @@ public class TabSolver extends JFrame {
 	private JTextField getSubtaskNumberTextField11() {
 		if (subtaskNumberTextField11 == null) {
 			subtaskNumberTextField11 = new JTextField();
-			subtaskNumberTextField11.setBounds(new Rectangle(115, 226, 75, 16));
+			subtaskNumberTextField11.setBounds(new Rectangle(115, 216, 98, 26));
 		}
 		return subtaskNumberTextField11;
 	}
@@ -1284,7 +1188,7 @@ public class TabSolver extends JFrame {
 	private JTextField getSubtaskBidNbTextField111() {
 		if (subtaskBidNbTextField111 == null) {
 			subtaskBidNbTextField111 = new JTextField();
-			subtaskBidNbTextField111.setBounds(new Rectangle(115, 336, 75, 16));
+			subtaskBidNbTextField111.setBounds(new Rectangle(115, 326, 98, 26));
 		}
 		return subtaskBidNbTextField111;
 	}
@@ -1297,7 +1201,7 @@ public class TabSolver extends JFrame {
 	private JTextArea getJTextArea() {
 		if (jTextArea == null) {
 			jTextArea = new JTextArea();
-			
+
 			jTextArea.setFont(font);
 			jTextArea.setBounds(new Rectangle(225, 15, 659, 297));
 		}
@@ -1351,7 +1255,7 @@ public class TabSolver extends JFrame {
 	private JTextField getTaskBidNumberTextField13() {
 		if (taskBidNumberTextField13 == null) {
 			taskBidNumberTextField13 = new JTextField();
-			taskBidNumberTextField13.setBounds(new Rectangle(118, 125, 72, 16));
+			taskBidNumberTextField13.setBounds(new Rectangle(118, 126, 95, 26));
 		}
 		return taskBidNumberTextField13;
 	}
@@ -1381,9 +1285,19 @@ public class TabSolver extends JFrame {
 			subtaskWinnerButtonTM = new JButton();
 			subtaskWinnerButtonTM.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					ArrayList<JTextComponent> list = new ArrayList<JTextComponent>();
+					list.add(subtaskBidWinnerNbTextField1111);
+					list.add(textField_14);
+					if (checkForFilledFields(list))
+						jTextArea.setText(dc.selectSubtaskBidWinner(Integer
+								.parseInt(subtaskBidWinnerNbTextField1111
+										.getText()), Integer
+								.parseInt(textField_14.getText())));
+					else
+						jTextArea.setText("Not enough values entered");
 				}
 			});
-			subtaskWinnerButtonTM.setBounds(new Rectangle(44, 513, 110, 26));
+			subtaskWinnerButtonTM.setBounds(new Rectangle(44, 502, 110, 26));
 			subtaskWinnerButtonTM.setText("Ok");
 		}
 		return subtaskWinnerButtonTM;
@@ -1403,7 +1317,6 @@ public class TabSolver extends JFrame {
 							|| subnamejTextField.getText().equals("")
 							|| subdescrpTextField.getText().equals("")
 							|| budgtjTextField.getText().equals("")
-							|| dateStartSubTextField.getText().equals("")
 							|| dateEndSubtTextField.getText().equals("")) {
 						feedbackTextArea1.setText("Not Enough Values.");
 					} else {
@@ -1418,7 +1331,7 @@ public class TabSolver extends JFrame {
 					}
 				}
 			});
-			createSubtaskButtonTM.setBounds(new Rectangle(540, 513, 110, 26));
+			createSubtaskButtonTM.setBounds(new Rectangle(540, 488, 110, 26));
 			createSubtaskButtonTM.setText("Ok");
 		}
 		return createSubtaskButtonTM;
@@ -1438,32 +1351,6 @@ public class TabSolver extends JFrame {
 	}
 
 	/**
-	 * This method initializes userIdTextField1
-	 * 
-	 * @return javax.swing.JTextField
-	 */
-	private JTextField getUserIdTextField1() {
-		if (userIdTextField1 == null) {
-			userIdTextField1 = new JTextField();
-			userIdTextField1.setBounds(new Rectangle(312, 360, 82, 20));
-		}
-		return userIdTextField1;
-	}
-
-	/**
-	 * This method initializes LocationTextField11
-	 * 
-	 * @return javax.swing.JTextField
-	 */
-	private JTextField getLocationTextField11() {
-		if (LocationTextField11 == null) {
-			LocationTextField11 = new JTextField();
-			LocationTextField11.setBounds(new Rectangle(312, 385, 82, 20));
-		}
-		return LocationTextField11;
-	}
-
-	/**
 	 * This method initializes subTskNumberTextField1
 	 * 
 	 * @return javax.swing.JTextField
@@ -1471,7 +1358,7 @@ public class TabSolver extends JFrame {
 	private JTextField getSubTskNumberTextField1() {
 		if (subTskNumberTextField1 == null) {
 			subTskNumberTextField1 = new JTextField();
-			subTskNumberTextField1.setBounds(new Rectangle(312, 435, 82, 20));
+			subTskNumberTextField1.setBounds(new Rectangle(331, 385, 82, 20));
 		}
 		return subTskNumberTextField1;
 	}
@@ -1484,22 +1371,9 @@ public class TabSolver extends JFrame {
 	private JTextField getTskNumberTextField1() {
 		if (TskNumberTextField1 == null) {
 			TskNumberTextField1 = new JTextField();
-			TskNumberTextField1.setBounds(new Rectangle(312, 410, 82, 20));
+			TskNumberTextField1.setBounds(new Rectangle(330, 361, 82, 20));
 		}
 		return TskNumberTextField1;
-	}
-
-	/**
-	 * This method initializes dateStartSubTextField
-	 * 
-	 * @return javax.swing.JTextField
-	 */
-	private JTextField getDateStartSubTextField() {
-		if (dateStartSubTextField == null) {
-			dateStartSubTextField = new JTextField();
-			dateStartSubTextField.setBounds(new Rectangle(312, 460, 82, 20));
-		}
-		return dateStartSubTextField;
 	}
 
 	/**
@@ -1510,7 +1384,7 @@ public class TabSolver extends JFrame {
 	private JTextField getDateEndSubtTextField() {
 		if (dateEndSubtTextField == null) {
 			dateEndSubtTextField = new JTextField();
-			dateEndSubtTextField.setBounds(new Rectangle(312, 485, 82, 20));
+			dateEndSubtTextField.setBounds(new Rectangle(331, 411, 82, 20));
 		}
 		return dateEndSubtTextField;
 	}
@@ -1523,7 +1397,7 @@ public class TabSolver extends JFrame {
 	private JTextField getBudgtjTextField() {
 		if (budgtjTextField == null) {
 			budgtjTextField = new JTextField();
-			budgtjTextField.setBounds(new Rectangle(490, 360, 59, 20));
+			budgtjTextField.setBounds(new Rectangle(331, 433, 82, 21));
 		}
 		return budgtjTextField;
 	}
@@ -1536,7 +1410,7 @@ public class TabSolver extends JFrame {
 	private JTextField getSubnamejTextField() {
 		if (subnamejTextField == null) {
 			subnamejTextField = new JTextField();
-			subnamejTextField.setBounds(new Rectangle(491, 385, 159, 20));
+			subnamejTextField.setBounds(new Rectangle(540, 361, 165, 20));
 		}
 		return subnamejTextField;
 	}
@@ -1549,7 +1423,7 @@ public class TabSolver extends JFrame {
 	private JTextField getSubdescrpTextField() {
 		if (subdescrpTextField == null) {
 			subdescrpTextField = new JTextField();
-			subdescrpTextField.setBounds(new Rectangle(491, 410, 165, 92));
+			subdescrpTextField.setBounds(new Rectangle(540, 384, 165, 92));
 		}
 		return subdescrpTextField;
 	}
@@ -1562,8 +1436,8 @@ public class TabSolver extends JFrame {
 	private JTextField getSubtaskBidWinnerNbTextField1111() {
 		if (subtaskBidWinnerNbTextField1111 == null) {
 			subtaskBidWinnerNbTextField1111 = new JTextField();
-			subtaskBidWinnerNbTextField1111.setBounds(new Rectangle(118, 453,
-					75, 16));
+			subtaskBidWinnerNbTextField1111.setBounds(new Rectangle(166, 450,
+					95, 26));
 		}
 		return subtaskBidWinnerNbTextField1111;
 	}
@@ -1602,7 +1476,7 @@ public class TabSolver extends JFrame {
 	private JTextField getTaskNumberTextField11() {
 		if (taskNumberTextField11 == null) {
 			taskNumberTextField11 = new JTextField();
-			taskNumberTextField11.setBounds(new Rectangle(118, 54, 74, 20));
+			taskNumberTextField11.setBounds(new Rectangle(118, 54, 89, 20));
 		}
 		return taskNumberTextField11;
 	}
@@ -1643,7 +1517,7 @@ public class TabSolver extends JFrame {
 		if (subtaskNumberTextField111 == null) {
 			subtaskNumberTextField111 = new JTextField();
 			subtaskNumberTextField111
-					.setBounds(new Rectangle(118, 247, 74, 20));
+					.setBounds(new Rectangle(118, 247, 89, 20));
 		}
 		return subtaskNumberTextField111;
 	}
@@ -1668,7 +1542,7 @@ public class TabSolver extends JFrame {
 					}
 				}
 			});
-			showsubtaskbidButtonTS.setBounds(new Rectangle(27, 464, 110, 29));
+			showsubtaskbidButtonTS.setBounds(new Rectangle(27, 371, 110, 29));
 			showsubtaskbidButtonTS.setText("Ok");
 
 		}
@@ -1684,7 +1558,7 @@ public class TabSolver extends JFrame {
 		if (subtaskBidNbTextField1111 == null) {
 			subtaskBidNbTextField1111 = new JTextField();
 			subtaskBidNbTextField1111
-					.setBounds(new Rectangle(118, 433, 74, 20));
+					.setBounds(new Rectangle(118, 343, 89, 20));
 		}
 		return subtaskBidNbTextField1111;
 	}
@@ -1726,37 +1600,11 @@ public class TabSolver extends JFrame {
 					}
 				}
 			});
-			enterSubtskBidButtonTS.setBounds(new Rectangle(725, 491, 110, 29));
+			enterSubtskBidButtonTS.setBounds(new Rectangle(742, 412, 110, 29));
 			enterSubtskBidButtonTS.setText("Ok");
 
 		}
 		return enterSubtskBidButtonTS;
-	}
-
-	/**
-	 * This method initializes userIdTextField2
-	 * 
-	 * @return javax.swing.JTextField
-	 */
-	private JTextField getUserIdTextField2() {
-		if (userIdTextField2 == null) {
-			userIdTextField2 = new JTextField();
-			userIdTextField2.setBounds(new Rectangle(694, 333, 86, 16));
-		}
-		return userIdTextField2;
-	}
-
-	/**
-	 * This method initializes LocationTextField12
-	 * 
-	 * @return javax.swing.JTextField
-	 */
-	private JTextField getLocationTextField12() {
-		if (LocationTextField12 == null) {
-			LocationTextField12 = new JTextField();
-			LocationTextField12.setBounds(new Rectangle(694, 357, 86, 16));
-		}
-		return LocationTextField12;
 	}
 
 	/**
@@ -1768,35 +1616,9 @@ public class TabSolver extends JFrame {
 		if (subtaskNumberTextField1111 == null) {
 			subtaskNumberTextField1111 = new JTextField();
 			subtaskNumberTextField1111
-					.setBounds(new Rectangle(694, 408, 86, 16));
+					.setBounds(new Rectangle(699, 352, 99, 20));
 		}
 		return subtaskNumberTextField1111;
-	}
-
-	/**
-	 * This method initializes entSubBidNbTextField
-	 * 
-	 * @return javax.swing.JTextField
-	 */
-	private JTextField getEntSubBidNbTextField() {
-		if (entSubBidNbTextField == null) {
-			entSubBidNbTextField = new JTextField();
-			entSubBidNbTextField.setBounds(new Rectangle(694, 435, 86, 16));
-		}
-		return entSubBidNbTextField;
-	}
-
-	/**
-	 * This method initializes groupeNbjTextField
-	 * 
-	 * @return javax.swing.JTextField
-	 */
-	private JTextField getGroupeNbjTextField() {
-		if (groupeNbjTextField == null) {
-			groupeNbjTextField = new JTextField();
-			groupeNbjTextField.setBounds(new Rectangle(694, 384, 86, 16));
-		}
-		return groupeNbjTextField;
 	}
 
 	/**
@@ -1807,7 +1629,7 @@ public class TabSolver extends JFrame {
 	private JTextField getOfferTextField1() {
 		if (OfferTextField1 == null) {
 			OfferTextField1 = new JTextField();
-			OfferTextField1.setBounds(new Rectangle(694, 464, 86, 16));
+			OfferTextField1.setBounds(new Rectangle(699, 380, 99, 20));
 		}
 		return OfferTextField1;
 	}
@@ -1834,7 +1656,7 @@ public class TabSolver extends JFrame {
 	private JButton getEmployeeReportButton() {
 		if (employeeReportButton == null) {
 			employeeReportButton = new JButton();
-			employeeReportButton.setBounds(new Rectangle(57, 91, 110, 26));
+			employeeReportButton.setBounds(new Rectangle(20, 122, 110, 26));
 			employeeReportButton.setText("Ok");
 
 		}
@@ -1849,7 +1671,7 @@ public class TabSolver extends JFrame {
 	private JTextArea getEmployeeNameTextArea2() {
 		if (employeeNameTextArea2 == null) {
 			employeeNameTextArea2 = new JTextArea();
-			employeeNameTextArea2.setBounds(new Rectangle(106, 62, 132, 20));
+			employeeNameTextArea2.setBounds(new Rectangle(20, 89, 132, 20));
 		}
 		return employeeNameTextArea2;
 	}
@@ -1931,21 +1753,8 @@ public class TabSolver extends JFrame {
 					displayTextArea.setText(dc.showMyTasks());
 				}
 			});
-			btnShowMyTasks.setBounds(553, 265, 179, 25);
+			btnShowMyTasks.setBounds(416, 265, 179, 25);
 		}
 		return btnShowMyTasks;
-	}
-
-	private JButton getBtnMyTasks() {
-		if (btnMyTasks == null) {
-			btnMyTasks = new JButton("My Tasks");
-			btnMyTasks.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					jTextArea.setText(dc.showMyTasks());
-				}
-			});
-			btnMyTasks.setBounds(665, 483, 117, 25);
-		}
-		return btnMyTasks;
 	}
 } // @jve:decl-index=0:visual-constraint="10,10"

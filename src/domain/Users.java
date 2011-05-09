@@ -1,16 +1,16 @@
 package domain;
+
 /**
  * @author Anthony Arena, Jonathan Anastasiou, John Frederiksen, Daniel Spitzer
  */
 /**
  * Class represents a User of the program.
  */
-public class Users {
+public class Users implements Comparable<Users>{
 	private int userId, securityLayer;
 	private String name, password, location;
 	
 	public Users() { 
-		
 	}
 
 	public Users(int userId, int securityLayer, String name, String password,
@@ -61,5 +61,7 @@ public class Users {
 	public void setLocation(String location) {
 		this.location = location;
 	}
-
+	public int compareTo(Users u) {
+		return userId - u.getUserId();
+		} 
 }

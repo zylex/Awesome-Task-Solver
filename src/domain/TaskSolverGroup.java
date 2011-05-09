@@ -1,6 +1,7 @@
 package domain;
 
 import java.util.ArrayList;
+import java.util.Collections;
 /**
  * @author Anthony Arena, Jonathan Anastasiou, John Frederiksen, Daniel Spitzer
  */
@@ -27,6 +28,7 @@ public class TaskSolverGroup {
 		if (users.isEmpty()) {
 			res = "No users in this group yet!";
 		} else {
+			Collections.sort(users);
 			for (int i = 0; i < users.size(); i++) {
 				res += users.get(i).getUserId() + "\n";
 			}

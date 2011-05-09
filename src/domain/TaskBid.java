@@ -5,8 +5,8 @@ package domain;
 /**
  * Class represents a Bid for a Task.
  */
-public class TaskBid {
-	private int taskBidId, taskId;
+public class TaskBid implements Comparable<TaskBid> {
+	private int taskBidId, taskId, version;
 	private Users taskManager;
 	private float taskBidHour;
 	private boolean taskBidWon;
@@ -59,6 +59,25 @@ public class TaskBid {
 	 */
 	public void setTaskId(int taskId) {
 		this.taskId = taskId;
+	}
+
+	/**
+	 * @return the version
+	 */
+	public int getVersion() {
+		return version;
+	}
+
+	/**
+	 * @param version the version to set
+	 */
+	public void setVersion(int version) {
+		this.version = version;
+	}
+
+	@Override
+	public int compareTo(TaskBid tb) {
+		return taskBidId - tb.getTaskBidId();
 	}
 
 }

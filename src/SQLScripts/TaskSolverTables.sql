@@ -41,7 +41,8 @@ taskDescription VARCHAR2(255) NOT NULL,
 taskCreated DATE NOT NULL,
 deadlineBid DATE NOT NULL,
 taskPrice Number(30,2),
-taskAuctionEnded CHAR(1) CHECK (taskAuctionEnded IN ('Y', 'N')) NOT NULL
+taskAuctionEnded CHAR(1) CHECK (taskAuctionEnded IN ('Y', 'N')) NOT NULL,
+taskv NUMBER(11) NOT NULL
 );
 
 CREATE TABLE Taskbids ( 
@@ -49,7 +50,8 @@ taskbidId NUMBER(11) NOT NULL PRIMARY KEY,
 taskId NUMBER(11) NOT NULL REFERENCES Tasks,
 userId NUMBER(11) NOT NULL REFERENCES Users, -- task manager
 taskBidHour FLOAT(126) NOT NULL, 
-taskbidWon CHAR(1) CHECK (taskbidWon IN ('Y', 'N')) NOT NULL
+taskbidWon CHAR(1) CHECK (taskbidWon IN ('Y', 'N')) NOT NULL,
+taskbidv NUMBER(11) NOT NULL
 );
 
 
@@ -62,7 +64,8 @@ subtaskHour NUMBER(11) NOT NULL,
 subtaskCreated DATE NOT NULL,
 subtaskDeadline DATE NOT NULL,
 subtaskAuctionEnded CHAR(1) CHECK (subtaskAuctionEnded IN ('Y', 'N')) NOT NULL,
-subtaskComplete CHAR(1) CHECK (subtaskComplete IN ('Y', 'N')) NOT NULL
+subtaskComplete CHAR(1) CHECK (subtaskComplete IN ('Y', 'N')) NOT NULL,
+subtaskv NUMBER(11) NOT NULL
 );
 
 
@@ -70,7 +73,8 @@ CREATE TABLE Subtaskbids(
 subtaskBidId NUMBER(11) NOT NULL PRIMARY KEY ,
 subtaskId NUMBER(11) NOT NULL REFERENCES Subtasks,
 subtaskBidHours NUMBER(11) NOT NULL, 
-subtaskbidWon CHAR(1) CHECK (subtaskbidWon IN ('Y', 'N')) NOT NULL
+subtaskbidWon CHAR(1) CHECK (subtaskbidWon IN ('Y', 'N')) NOT NULL,
+subtaskbidv NUMBER(11) NOT NULL
 );
 
 CREATE TABLE Groups ( 
@@ -86,8 +90,8 @@ Rate NUMBER(5,5)
 
 
 -- create sequences
-create sequence SubtaskIdSeq;
-create sequence SubtaskBidIdSeq;
-create sequence TaskIdSeq;
-create sequence TaskBidIdSeq;
-create sequence UserIdSeq;
+CREATE sequence SubtaskIdSeq;
+CREATE sequence SubtaskBidIdSeq;
+CREATE sequence TaskIdSeq;
+CREATE sequence TaskBidIdSeq;
+CREATE sequence UserIdSeq;

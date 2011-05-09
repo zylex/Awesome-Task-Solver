@@ -38,7 +38,7 @@ INSERT INTO Users VALUES (1, 25, 'Johnny Jensen', 'XXX', 'Denmark');
 select u.userId, u.securityLayer, u.name, u.password, u.location
 from Users u, Tasks t where t.userId = u.userId and t.taskId = 50001;
 
-
+select * from USERS where userId = 2;
 
 --create subtask
 INSERT INTO Subtasks  VALUES (800011, 80001, '1st part', 'Do the first part',

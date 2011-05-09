@@ -5,8 +5,8 @@ package domain;
 /**
  * Class represents a Bid for a Subtask.
  */
-public class SubtaskBid {
-	private int subtaskBidId, subtaskBidHours, subtaskId;
+public class SubtaskBid implements Comparable<SubtaskBid> {
+	private int subtaskBidId, subtaskBidHours, subtaskId, version;
 	private boolean subtaskBidWon;
 	private TaskSolverGroup taskSolverGroup;
 
@@ -58,6 +58,24 @@ public class SubtaskBid {
 	 */
 	public void setSubtaskId(int subtaskId) {
 		this.subtaskId = subtaskId;
+	}
+
+	/**
+	 * @return the version
+	 */
+	public int getVersion() {
+		return version;
+	}
+
+	/**
+	 * @param version the version to set
+	 */
+	public void setVersion(int version) {
+		this.version = version;
+	}
+	@Override
+	public int compareTo(SubtaskBid sb) {
+		return subtaskBidId - sb.getSubtaskBidId();
 	}
 
 }

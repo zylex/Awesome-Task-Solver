@@ -10,9 +10,9 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Task {
+public class Task implements Comparable<Task> {
 
-	private int taskId;
+	private int taskId, version;
 	private Users taskOwner;
 	private String taskDescription, taskName;
 	private Date taskCreated, deadlineBid;
@@ -125,11 +125,32 @@ public class Task {
 		int size = st.size();
 		int count = 0;
 		for (int i = 0; i < size; i++) {
-			if (st.get(i).isSubtaskCompleted())
+			if (st.get(i).isSubtaskCompleted()) {
 				count++;
+			}
 		}
-		double completed = count / size * 100;
+		double completed = (double)count / (double)size * 100;
 		return completed;
+	}
+
+	/**
+	 * @return the version
+	 */
+	public int getVersion() {
+		return version;
+	}
+
+	/**
+	 * @param version
+	 *            the version to set
+	 */
+	public void setVersion(int version) {
+		this.version = version;
+	}
+
+	@Override
+	public int compareTo(Task t) {
+		return taskId - t.getTaskId();
 	}
 
 }

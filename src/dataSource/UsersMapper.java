@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import domain.TaskSolverGroup;
 import domain.Users;
+
 /**
  * @author Anthony Arena, Jonathan Anastasiou, John Frederiksen, Daniel Spitzer
  */
@@ -16,13 +17,15 @@ import domain.Users;
 public class UsersMapper {
 
 	/**
-	 * @param userId is the Id number of the User
-	 * @param con is the Connection that is to be used.
+	 * @param userId
+	 *            is the Id number of the User
+	 * @param con
+	 *            is the Connection that is to be used.
 	 * @return Users with the Id passed as a parameter
 	 */
 	public Users getUser(int userId, Connection con) {
 		Users u = null;
-		String query1 = "select * from Users where userId = ? order by NAME asc";
+		String query1 = "SELECT * FROM users WHERE userId = ?";
 		// get user by id
 
 		PreparedStatement statement = null;
@@ -38,22 +41,24 @@ public class UsersMapper {
 			}
 
 		} catch (Exception e) {
-			System.out.println("Fail in UserMapper - getUser");
+			System.out.println("Fail in UsersMapper - getUser");
 			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 		return u;
 	}
 
 	/**
 	 * @param subtaskBidId
+	 *            ID number of the SubtaskBid that the group has bid on.
 	 * @param con
-	 * @return
+	 *            The Connection to be used.
+	 * @return TaskSolverGroup that has the bid specified by the ID number.
 	 */
 	public TaskSolverGroup getTaskSolverGroup(int subtaskBidId, Connection con) {
 		TaskSolverGroup t = null;
-		String query = "select userId from Groups where subtaskBidId = ?"; // get
-																			// the
-																			// userIds
+		String query = "SELECT userId FROM groups WHERE subtaskBidId = ? "
+				+ "ORDER BY userId DESC"; // get the userIds
 		PreparedStatement statement = null;
 		ArrayList<Users> users = new ArrayList<Users>(1);
 		try {
@@ -63,8 +68,8 @@ public class UsersMapper {
 			ResultSet rs = statement.executeQuery();
 			while (rs.next()) { // keep getting the next user while there are
 								// lines
-				users.add(getUser(rs.getInt(1), con)); // add user to the
-														// ArrayList
+				users.add(getUser(rs.getInt("userId"), con)); // add user to the
+				// ArrayList
 			}
 
 		} catch (Exception e) {
@@ -77,75 +82,88 @@ public class UsersMapper {
 
 	/**
 	 * @param u
+	 *            The Users to be saved
 	 * @param con
-	 * @return
+	 *            The Connection to be used.
+	 * @return whether or not the save was successful.
 	 */
 	public boolean saveNewUser(Users u, Connection con) {
-		int rowsInserted = 0;
-		String SQLString1 = "select userIdSeq.nextval from dual";
-		String SQLString2 = "insert into Users values (?,?,?,?,?)";
+		if (u == null)
+			return false;
+		else {
+			int rowsInserted = 0;
+			String SQLString1 = "select userIdSeq.nextval from dual";
+			String SQLString2 = "insert into Users values (?,?,?,?,?)";
 
-		PreparedStatement statement = null;
+			PreparedStatement statement = null;
 
-		try {
-			// == get unique userId
-			statement = con.prepareStatement(SQLString1);
-			ResultSet rs = statement.executeQuery();
-			if (rs.next()) {
-				u.setUserId(rs.getInt(1));
+			try {
+				// == get unique userId
+				statement = con.prepareStatement(SQLString1);
+				ResultSet rs = statement.executeQuery();
+				if (rs.next()) {
+					u.setUserId(rs.getInt(1));
+				}
+
+				// == insert tuple
+				statement = con.prepareStatement(SQLString2);
+				statement.setInt(1, u.getUserId());
+				statement.setInt(2, u.getSecurityLayer());
+				statement.setString(3, u.getName());
+				statement.setString(4, u.getPassword());
+				statement.setString(5, u.getLocation());
+				rowsInserted = statement.executeUpdate();
+			} catch (Exception e) {
+				System.out.println("OrderMapper went Kaput - saveNewUser");
+				System.out.println(e.getMessage());
 			}
-
-			// == insert tuple
-			statement = con.prepareStatement(SQLString2);
-			statement.setInt(1, u.getUserId());
-			statement.setInt(2, u.getSecurityLayer());
-			statement.setString(3, u.getName());
-			statement.setString(4, u.getPassword());
-			statement.setString(5, u.getLocation());
-			rowsInserted = statement.executeUpdate();
-		} catch (Exception e) {
-			System.out.println("OrderMapper went Kaput - saveNewUser");
-			System.out.println(e.getMessage());
+			return rowsInserted == 1;
 		}
-
-		return rowsInserted == 1;
 	}
 
 	/**
 	 * @param subtaskId
+	 *            ID number of the SubtaskBid that the TaskSolverGroup has made.
 	 * @param t
+	 *            TaskSolverGroup we are trying to save,
 	 * @param con
-	 * @return
+	 *            The Connection to be used.
+	 * @return Whether the save was successful or not.
 	 */
 	public boolean saveNewTaskSolverGroup(int subtaskId, TaskSolverGroup t,
 			Connection con) {
-		int rowsInserted = 0;
-		String SQLString = "insert into Groups values (?,?)";
+		if (t == null)
+			return false;
+		else {
+			int rowsInserted = 0;
+			String SQLString = "insert into Groups values (?,?)";
 
-		PreparedStatement statement = null;
+			PreparedStatement statement = null;
 
-		try {
-			// == insert tuple
-			statement = con.prepareStatement(SQLString);
-			for (int i = 0; i < t.getUsers().size(); i++) {
-				statement.setInt(1, subtaskId);
-				statement.setInt(2, t.getUsers().get(i).getUserId());
-				rowsInserted += statement.executeUpdate();
+			try {
+				// == insert tuple
+				statement = con.prepareStatement(SQLString);
+				for (int i = 0; i < t.getUsers().size(); i++) {
+					statement.setInt(1, subtaskId);
+					statement.setInt(2, t.getUsers().get(i).getUserId());
+					rowsInserted += statement.executeUpdate();
+				}
+
+			} catch (Exception e) {
+				System.out
+						.println("OrderMapper went Kaput - saveNewTaskSolvergroup");
+				System.out.println(e.getMessage());
 			}
-
-		} catch (Exception e) {
-			System.out
-					.println("OrderMapper went Kaput - saveNewTaskSolvergroup");
-			System.out.println(e.getMessage());
+			return rowsInserted == t.getUsers().size();
 		}
-
-		return rowsInserted == t.getUsers().size();
 	}
 
 	/**
 	 * @param taskId
+	 *            ID number of the Task for which we are looking for the Owner
 	 * @param con
-	 * @return
+	 *            The Connection to be used.
+	 * @return Users we are looking for, the Task Owner of the Task.
 	 */
 	public Users getTaskOwner(int taskId, Connection con) {
 		Users u = null;
@@ -166,7 +184,7 @@ public class UsersMapper {
 			}
 
 		} catch (Exception e) {
-			System.out.println("Fail in UserMapper - getUser");
+			System.out.println("Fail in UsersMapper - getTaskOwner");
 			System.out.println(e.getMessage());
 		}
 		return u;
@@ -174,21 +192,24 @@ public class UsersMapper {
 
 	/**
 	 * @param taskBidId
+	 *            ID number of the TaskBid for which we are looking for the
+	 *            Manager
 	 * @param con
-	 * @return
+	 *            The Connection to be used
+	 * @return The Users that is the Task Manager of the specified Task Bid.
 	 */
 	public Users getTaskManagerByTaskBidId(int taskBidId, Connection con) {
 		Users u = null;
 		String query1 = "select u.userId, u.securityLayer, u.name, u.password, u.location "
-				+ "from Users u, TaskBids tb where tb.userId = u.userId and tb.taskBidId = ? order by u.NAME asc";
-		// get user by taskId
+				+ "from Users u, TaskBids tb where tb.userId = u.userId and tb.taskBidId = ? "
+				+ "order by u.NAME asc"; // get user by taskBidId
 
 		PreparedStatement statement = null;
 
 		try {
 			// === get user
 			statement = con.prepareStatement(query1);
-			statement.setInt(1, taskBidId); // input taskId
+			statement.setInt(1, taskBidId); // input taskBidId
 			ResultSet rs = statement.executeQuery();
 			if (rs.next()) {
 				u = new Users(rs.getInt(1), rs.getInt(2), rs.getString(3),
@@ -196,7 +217,8 @@ public class UsersMapper {
 			}
 
 		} catch (Exception e) {
-			System.out.println("Fail in UserMapper - getUser");
+			System.out
+					.println("Fail in UsersMapper - getTaskManagerByTaskBidId");
 			System.out.println(e.getMessage());
 		}
 		return u;
@@ -204,29 +226,29 @@ public class UsersMapper {
 
 	/**
 	 * @param subtaskId
+	 *            ID number of the Subtask for which we are looking for the
+	 *            Manager.
 	 * @param con
-	 * @return
+	 *            The Connection to be used.
+	 * @return Users which is the Task Manager of the specified Subtask.
 	 */
 	public Users getTaskManagerBySubtaskId(int subtaskId, Connection con) {
-		Users u = new Users();
+		Users u = null;
 		String query1 = "select u.userId, u.securityLayer, u.name, u.password, u.location "
-				+ "from Users u, TaskBids tb, Subtasks s where tb.userId = u.userId "
-				+ "and tb.taskbidWon = 'Y' and tb.taskId = s.taskId and s.subtaskId = ? order by u.NAME asc";
-		// get user by taskId
+				+ "from Users u, TaskBids tb, Subtasks s WHERE tb.userId = u.userId "
+				+ "and tb.taskbidWon = 'Y' and tb.taskId = s.taskId and s.subtaskId = ?";
+		// get user by subtaskId
 
 		PreparedStatement statement = null;
 
 		try {
 			// === get user
 			statement = con.prepareStatement(query1);
-			statement.setInt(1, subtaskId); // input taskId
+			statement.setInt(1, subtaskId); // input subtaskId
 			ResultSet rs = statement.executeQuery();
 			if (rs.next()) {
-				u.setUserId(rs.getInt(1));
-				u.setSecurityLayer(rs.getInt(2));
-				u.setName(rs.getString(3));
-				u.setPassword(rs.getString(4));
-				u.setLocation(rs.getString(5));
+				u = new Users(rs.getInt(1), rs.getInt(2), rs.getString(3),
+						rs.getString(4), rs.getString(5));
 			}
 		} catch (Exception e) {
 			System.out
@@ -235,15 +257,15 @@ public class UsersMapper {
 		}
 		return u;
 	}
-	
+
 	/**
 	 * @param con
-	 * @return
+	 *            The Connection to be used.
+	 * @return ArrayList of all the Users in the database.
 	 */
-	public ArrayList<Users> getAllUsers (Connection con)
-	{
-	ArrayList<Users> alu = new ArrayList<Users>(1);
-		String query1 = "select * from Users order by NAME asc";
+	public ArrayList<Users> getAllUsers(Connection con) {
+		ArrayList<Users> alu = new ArrayList<Users>(1);
+		String query1 = "SELECT * FROM Users ORDER BY userId DESC";
 		PreparedStatement statement = null;
 
 		try {
@@ -252,14 +274,45 @@ public class UsersMapper {
 			ResultSet rs = statement.executeQuery();
 			while (rs.next()) {
 				alu.add(new Users(rs.getInt(1), rs.getInt(2), rs.getString(3),
-						rs.getString(4), rs.getString(5))) ;
+						rs.getString(4), rs.getString(5)));
 			}
 
 		} catch (Exception e) {
-			System.out.println("Fail in UserMapper - getAllUser");
+			System.out.println("Fail in UserMapper - getAllUsers");
 			System.out.println(e.getMessage());
 		}
 		return alu;
 	}
-	
+
+	/**
+	 * @param u
+	 *            Users that we want to edit.
+	 * @param con
+	 *            Connection to be used.
+	 * @return boolean whether the save as successful or not.
+	 */
+	public boolean editUser(Users u, Connection con) {
+		if (u == null)
+			return false;
+		else {
+			int rowsUpdated = 0;
+			String sql = "UPDATE Users SET name = ?, password = ?, securityLayer = ?, location = ? "
+					+ "WHERE userId = ?"; // update query
+			PreparedStatement statement = null;
+
+			try {
+				statement = con.prepareStatement(sql);
+				statement.setString(1, u.getName());
+				statement.setString(2, u.getPassword());
+				statement.setInt(3, u.getSecurityLayer());
+				statement.setString(4, u.getLocation());
+				statement.setInt(5, u.getUserId());
+				rowsUpdated = statement.executeUpdate();
+			} catch (Exception e) {
+				System.out.println("Fail in UsersMapper - editUser");
+				System.out.println(e.getMessage());
+			}
+			return rowsUpdated == 1;
+		}
+	}
 }
