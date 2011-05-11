@@ -145,7 +145,6 @@ public class TabSolver extends JFrame {
 	private void hideAllTabsButOne(int index) {
 		tasksolverGuiPane.setSelectedIndex(index);
 		for (int i = tasksolverGuiPane.getTabCount()-1; i >= 0; i--) {
-			System.out.println(i);
 			if (i != index) {
 				try {
 					tasksolverGuiPane.removeTabAt(i);
