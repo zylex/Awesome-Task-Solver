@@ -99,6 +99,8 @@ public class Login extends JFrame {
 		});
 		button.setBounds(149, 82, 117, 25);
 		contentPane.add(button);
+		
+		getRootPane().setDefaultButton(button);
 
 		passwordField = new JPasswordField();
 		passwordField.setBounds(12, 85, 114, 19);

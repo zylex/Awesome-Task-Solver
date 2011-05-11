@@ -142,6 +142,20 @@ public class TabSolver extends JFrame {
 		return true;
 	}
 
+	private void hideAllTabsButOne(int index) {
+		tasksolverGuiPane.setSelectedIndex(index);
+		for (int i = tasksolverGuiPane.getTabCount()-1; i >= 0; i--) {
+			System.out.println(i);
+			if (i != index) {
+				try {
+					tasksolverGuiPane.removeTabAt(i);
+				} catch ( IndexOutOfBoundsException e ) {
+					System.out.println( "Something went wrong with the tabs, removing: "+i );
+				}
+			}
+		}
+	}
+
 	/**
 	 * This method initializes jTabbedPane
 	 * 
@@ -150,12 +164,9 @@ public class TabSolver extends JFrame {
 	private JTabbedPane getTasksolverGuiPane() {
 		if (tasksolverGuiPane == null) {
 			tasksolverGuiPane = new JTabbedPane();
-			tasksolverGuiPane.addTab("Task Owner", null, getTaskOwnerPanel(),
-					null);
-			tasksolverGuiPane.addTab("Task Manager", null,
-					getTaskManagerPanel(), null);
-			tasksolverGuiPane.addTab("Task Solver", null, getTaskSolverPanel(),
-					null);
+			tasksolverGuiPane.addTab("Task Owner", null, getTaskOwnerPanel(), null);
+			tasksolverGuiPane.addTab("Task Manager", null, getTaskManagerPanel(), null);
+			tasksolverGuiPane.addTab("Task Solver", null, getTaskSolverPanel(), null);
 			tasksolverGuiPane.addTab("HR", null, getHrPanel(), null);
 
 			adminPanel = new JPanel();
@@ -270,16 +281,10 @@ public class TabSolver extends JFrame {
 			JButton createUserButton = new JButton("Ok");
 			createUserButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					if (textField_1.getText().equals("")
-							|| textField_2.getText().equals("")
-							|| textField_3.getText().equals("")
-							|| textField_4.getText().equals("")) {
+					if (textField_1.getText().equals("") || textField_2.getText().equals("") || textField_3.getText().equals("") || textField_4.getText().equals("")) {
 						feedbackjTextArea.setText("Not enough values.");
 					} else {
-						textPane.setText(dc.createUsers(
-								Integer.parseInt(textField_4.getText()),
-								textField_1.getText(), textField_2.getText(),
-								textField_3.getText()));
+						textPane.setText(dc.createUsers(Integer.parseInt(textField_4.getText()), textField_1.getText(), textField_2.getText(), textField_3.getText()));
 					}
 				}
 			});
@@ -296,11 +301,7 @@ public class TabSolver extends JFrame {
 					textFields.add(textField_8);
 					textFields.add(textField_9);
 					if (checkForFilledFields(textFields)) {
-						textPane.setText(dc.editUser(
-								Integer.parseInt(textField_5.getText()),
-								textField_6.getText(), textField_7.getText(),
-								textField_8.getText(),
-								Integer.parseInt(textField_9.getText())));
+						textPane.setText(dc.editUser(Integer.parseInt(textField_5.getText()), textField_6.getText(), textField_7.getText(), textField_8.getText(), Integer.parseInt(textField_9.getText())));
 					} else
 						textPane.setText("You have not filled enough fields!");
 				}
@@ -381,8 +382,7 @@ public class TabSolver extends JFrame {
 			lblShowTaskBids.setBounds(9, 218, 148, 14);
 			taskOwnerPanel.add(lblShowTaskBids);
 
-			JLabel lblSelectTaskAuction = new JLabel(
-					"Select Task Auction Winner:");
+			JLabel lblSelectTaskAuction = new JLabel("Select Task Auction Winner:");
 			lblSelectTaskAuction.setFont(new Font("Tahoma", Font.PLAIN, 15));
 			lblSelectTaskAuction.setBounds(9, 368, 232, 14);
 			taskOwnerPanel.add(lblSelectTaskAuction);
@@ -411,12 +411,7 @@ public class TabSolver extends JFrame {
 					textFields.add(budgetTextField);
 					textFields.add(dateBidStopTextField11);
 					if (checkForFilledFields(textFields)) {
-						String display = dc.editTask(
-								Integer.parseInt(taskidjTextField.getText()),
-								tasknamejTextField.getText(),
-								taskDescriptionTextField.getText(),
-								Integer.parseInt(budgetTextField.getText()),
-								Date.valueOf(dateBidStopTextField11.getText()));
+						String display = dc.editTask(Integer.parseInt(taskidjTextField.getText()), tasknamejTextField.getText(), taskDescriptionTextField.getText(), Integer.parseInt(budgetTextField.getText()), Date.valueOf(dateBidStopTextField11.getText()));
 						feedbackjTextArea.setText(display);
 						displayTextArea.setText(display);
 					} else {
@@ -582,12 +577,7 @@ public class TabSolver extends JFrame {
 					textFields.add(subnamejTextField);
 					textFields.add(subdescrpTextField);
 					if (checkForFilledFields(textFields)) {
-						feedbackTextArea1.setText(dc.editSubTask(Integer
-								.parseInt(subTskNumberTextField1.getText()),
-								subnamejTextField.getText(), subdescrpTextField
-										.getText(), Integer
-										.parseInt(budgtjTextField.getText()),
-								Date.valueOf(dateEndSubtTextField.getText())));
+						feedbackTextArea1.setText(dc.editSubTask(Integer.parseInt(subTskNumberTextField1.getText()), subnamejTextField.getText(), subdescrpTextField.getText(), Integer.parseInt(budgtjTextField.getText()), Date.valueOf(dateEndSubtTextField.getText())));
 					} else {
 						feedbackTextArea1.setText("Fill all fields!");
 					}
@@ -627,13 +617,10 @@ public class TabSolver extends JFrame {
 			btnOk.setBounds(777, 409, 86, 23);
 			btnOk.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					if ((textField_10.getText().equals("") || textField_12
-							.getText().equals(""))) {
+					if ((textField_10.getText().equals("") || textField_12.getText().equals(""))) {
 						feedbackTextArea1.setText("Not Enough Values");
 					} else {
-						feedbackTextArea1.setText(dc.makeTaskbid(
-								Integer.parseInt(textField_10.getText()),
-								Integer.parseInt(textField_12.getText())));
+						feedbackTextArea1.setText(dc.makeTaskbid(Integer.parseInt(textField_10.getText()), Integer.parseInt(textField_12.getText())));
 					}
 				}
 			});
@@ -662,11 +649,9 @@ public class TabSolver extends JFrame {
 			showTaskButtonTO.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					if (taskNumberTextField.getText().equals("")) {
-						feedbackjTextArea
-								.setText("Must enter a Task ID number.");
+						feedbackjTextArea.setText("Must enter a Task ID number.");
 					} else {
-						displayTextArea.setText(dc.showTask(Integer
-								.parseInt(taskNumberTextField.getText())));
+						displayTextArea.setText(dc.showTask(Integer.parseInt(taskNumberTextField.getText())));
 						feedbackjTextArea.setText("Success!");
 					}
 				}
@@ -716,21 +701,16 @@ public class TabSolver extends JFrame {
 			showTaskBidButtonTO = new JButton();
 			showTaskBidButtonTO.setBounds(new Rectangle(46, 272, 127, 26));
 			showTaskBidButtonTO.setText("Ok");
-			showTaskBidButtonTO
-					.addActionListener(new java.awt.event.ActionListener() {
-						public void actionPerformed(java.awt.event.ActionEvent e) {
-							if (taskBidNumberTextField1.getText().equals("")) {
-								feedbackjTextArea
-										.setText("Must enter a Task Bid ID number.");
-							} else {
-								displayTextArea.setText(dc.showTaskBid(Integer
-										.parseInt(taskBidNumberTextField1
-												.getText())));
-								feedbackjTextArea
-										.setText("Success!... I hope =P");
-							}
-						}
-					});
+			showTaskBidButtonTO.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+					if (taskBidNumberTextField1.getText().equals("")) {
+						feedbackjTextArea.setText("Must enter a Task Bid ID number.");
+					} else {
+						displayTextArea.setText(dc.showTaskBid(Integer.parseInt(taskBidNumberTextField1.getText())));
+						feedbackjTextArea.setText("Success!... I hope =P");
+					}
+				}
+			});
 		}
 		return showTaskBidButtonTO;
 	}
@@ -758,17 +738,11 @@ public class TabSolver extends JFrame {
 			taskWinnerjButtonTO = new JButton();
 			taskWinnerjButtonTO.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					if (taskBidNumberTextField11.getText().equals("")
-							|| taskIDWinnerTextField.getText().equals("")) {
-						feedbackjTextArea
-								.setText("You did not enter enough information! selectTaskBidWinner");
+					if (taskBidNumberTextField11.getText().equals("") || taskIDWinnerTextField.getText().equals("")) {
+						feedbackjTextArea.setText("You did not enter enough information! selectTaskBidWinner");
 					} else {
-						feedbackjTextArea
-								.setText("Request sent - selectTaskBidWinner");
-						displayTextArea.setText(dc.selectTaskBidWinner(Integer
-								.parseInt(taskIDWinnerTextField.getText()),
-								Integer.parseInt(taskBidNumberTextField11
-										.getText())));
+						feedbackjTextArea.setText("Request sent - selectTaskBidWinner");
+						displayTextArea.setText(dc.selectTaskBidWinner(Integer.parseInt(taskIDWinnerTextField.getText()), Integer.parseInt(taskBidNumberTextField11.getText())));
 					}
 				}
 			});
@@ -801,17 +775,10 @@ public class TabSolver extends JFrame {
 			createTaskButtonTO = new JButton();
 			createTaskButtonTO.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					if (tasknamejTextField.getText().equals("")
-							|| taskDescriptionTextField.getText().equals("")
-							|| budgetTextField.getText().equals("")
-							|| dateBidStopTextField11.getText().equals("")) {
+					if (tasknamejTextField.getText().equals("") || taskDescriptionTextField.getText().equals("") || budgetTextField.getText().equals("") || dateBidStopTextField11.getText().equals("")) {
 						feedbackjTextArea.setText("Not enough values.");
 					} else {
-						feedbackjTextArea.setText(dc.createTask(
-								tasknamejTextField.getText(),
-								taskDescriptionTextField.getText(),
-								Integer.parseInt(budgetTextField.getText()),
-								Date.valueOf(dateBidStopTextField11.getText())));
+						feedbackjTextArea.setText(dc.createTask(tasknamejTextField.getText(), taskDescriptionTextField.getText(), Integer.parseInt(budgetTextField.getText()), Date.valueOf(dateBidStopTextField11.getText())));
 					}
 				}
 			});
@@ -882,8 +849,7 @@ public class TabSolver extends JFrame {
 	private JTextField getTaskDescriptionTextField() {
 		if (taskDescriptionTextField == null) {
 			taskDescriptionTextField = new JTextField();
-			taskDescriptionTextField
-					.setBounds(new Rectangle(503, 341, 384, 71));
+			taskDescriptionTextField.setBounds(new Rectangle(503, 341, 384, 71));
 		}
 		return taskDescriptionTextField;
 	}
@@ -1002,8 +968,7 @@ public class TabSolver extends JFrame {
 					if (addUserToGroupTextField.getText().equals("")) {
 						feedbackTextArea11.setText("Must input a User ID!");
 					} else {
-						int userId = Integer.parseInt(addUserToGroupTextField
-								.getText());
+						int userId = Integer.parseInt(addUserToGroupTextField.getText());
 						groupTextArea.setText(dc.addUserToGroup(userId));
 						feedbackTextArea11.setText("");
 					}
@@ -1033,8 +998,7 @@ public class TabSolver extends JFrame {
 					if (solveSubtaskTextField.getText().equals(""))
 						jTextArea1.setText("Error not enough values!");
 					else
-						jTextArea1.setText(dc.solveSubtask(Integer
-								.parseInt(solveSubtaskTextField.getText())));
+						jTextArea1.setText(dc.solveSubtask(Integer.parseInt(solveSubtaskTextField.getText())));
 				}
 			});
 			solveSubtaskButton.setBounds(20, 460, 117, 25);
@@ -1084,11 +1048,9 @@ public class TabSolver extends JFrame {
 			showTaskButtonTM.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					if (taskNumberTextField1.getText().equals("")) {
-						feedbackTextArea1
-								.setText("Must enter a Task ID number.");
+						feedbackTextArea1.setText("Must enter a Task ID number.");
 					} else {
-						jTextArea.setText(dc.showTask(Integer
-								.parseInt(taskNumberTextField1.getText())));
+						jTextArea.setText(dc.showTask(Integer.parseInt(taskNumberTextField1.getText())));
 						feedbackTextArea1.setText("Success!");
 					}
 				}
@@ -1124,11 +1086,9 @@ public class TabSolver extends JFrame {
 			showsubtaskButtonTM.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (subtaskNumberTextField11.getText().equals("")) {
-						feedbackTextArea1
-								.setText("Must enter a Subtask ID number.");
+						feedbackTextArea1.setText("Must enter a Subtask ID number.");
 					} else {
-						jTextArea.setText(dc.showSubtask(Integer
-								.parseInt(subtaskNumberTextField11.getText())));
+						jTextArea.setText(dc.showSubtask(Integer.parseInt(subtaskNumberTextField11.getText())));
 						feedbackTextArea1.setText("Success!");
 					}
 				}
@@ -1151,11 +1111,9 @@ public class TabSolver extends JFrame {
 			showsubtaskbidButtonTM.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (subtaskBidNbTextField111.getText().equals("")) {
-						feedbackTextArea1
-								.setText("Must enter a Subtask Bid ID number.");
+						feedbackTextArea1.setText("Must enter a Subtask Bid ID number.");
 					} else {
-						jTextArea.setText(dc.showSubtaskBid(Integer
-								.parseInt(subtaskBidNbTextField111.getText())));
+						jTextArea.setText(dc.showSubtaskBid(Integer.parseInt(subtaskBidNbTextField111.getText())));
 						feedbackTextArea1.setText("Success!");
 					}
 				}
@@ -1234,11 +1192,9 @@ public class TabSolver extends JFrame {
 			showTaskBidButtonTM.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (taskBidNumberTextField13.getText().equals("")) {
-						feedbackTextArea1
-								.setText("Must enter a Task Bid ID number.");
+						feedbackTextArea1.setText("Must enter a Task Bid ID number.");
 					} else {
-						jTextArea.setText(dc.showTaskBid(Integer
-								.parseInt(taskBidNumberTextField13.getText())));
+						jTextArea.setText(dc.showTaskBid(Integer.parseInt(taskBidNumberTextField13.getText())));
 						feedbackTextArea1.setText("Success!");
 					}
 				}
@@ -1289,10 +1245,7 @@ public class TabSolver extends JFrame {
 					list.add(subtaskBidWinnerNbTextField1111);
 					list.add(textField_14);
 					if (checkForFilledFields(list))
-						jTextArea.setText(dc.selectSubtaskBidWinner(Integer
-								.parseInt(subtaskBidWinnerNbTextField1111
-										.getText()), Integer
-								.parseInt(textField_14.getText())));
+						jTextArea.setText(dc.selectSubtaskBidWinner(Integer.parseInt(subtaskBidWinnerNbTextField1111.getText()), Integer.parseInt(textField_14.getText())));
 					else
 						jTextArea.setText("Not enough values entered");
 				}
@@ -1313,19 +1266,10 @@ public class TabSolver extends JFrame {
 			createSubtaskButtonTM = new JButton();
 			createSubtaskButtonTM.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					if (TskNumberTextField1.getText().equals("")
-							|| subnamejTextField.getText().equals("")
-							|| subdescrpTextField.getText().equals("")
-							|| budgtjTextField.getText().equals("")
-							|| dateEndSubtTextField.getText().equals("")) {
+					if (TskNumberTextField1.getText().equals("") || subnamejTextField.getText().equals("") || subdescrpTextField.getText().equals("") || budgtjTextField.getText().equals("") || dateEndSubtTextField.getText().equals("")) {
 						feedbackTextArea1.setText("Not Enough Values.");
 					} else {
-						String display = dc.createSubtask(
-								Integer.parseInt(TskNumberTextField1.getText()),
-								subnamejTextField.getText(),
-								subdescrpTextField.getText(),
-								Integer.parseInt(budgtjTextField.getText()),
-								Date.valueOf(dateEndSubtTextField.getText()));
+						String display = dc.createSubtask(Integer.parseInt(TskNumberTextField1.getText()), subnamejTextField.getText(), subdescrpTextField.getText(), Integer.parseInt(budgtjTextField.getText()), Date.valueOf(dateEndSubtTextField.getText()));
 						jTextArea.setText(display);
 						feedbackTextArea1.setText(display);
 					}
@@ -1436,8 +1380,7 @@ public class TabSolver extends JFrame {
 	private JTextField getSubtaskBidWinnerNbTextField1111() {
 		if (subtaskBidWinnerNbTextField1111 == null) {
 			subtaskBidWinnerNbTextField1111 = new JTextField();
-			subtaskBidWinnerNbTextField1111.setBounds(new Rectangle(166, 450,
-					95, 26));
+			subtaskBidWinnerNbTextField1111.setBounds(new Rectangle(166, 450, 95, 26));
 		}
 		return subtaskBidWinnerNbTextField1111;
 	}
@@ -1455,11 +1398,9 @@ public class TabSolver extends JFrame {
 			showTaskButtonTS.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (taskNumberTextField11.getText().equals("")) {
-						feedbackTextArea11
-								.setText("Must enter a Task ID number.");
+						feedbackTextArea11.setText("Must enter a Task ID number.");
 					} else {
-						jTextArea1.setText(dc.showTask(Integer
-								.parseInt(taskNumberTextField11.getText())));
+						jTextArea1.setText(dc.showTask(Integer.parseInt(taskNumberTextField11.getText())));
 						feedbackTextArea11.setText("Success!");
 					}
 				}
@@ -1492,11 +1433,9 @@ public class TabSolver extends JFrame {
 			showsubtaskButtonTS.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (subtaskNumberTextField111.getText().equals("")) {
-						feedbackTextArea11
-								.setText("Must enter a Subtask ID number.");
+						feedbackTextArea11.setText("Must enter a Subtask ID number.");
 					} else {
-						jTextArea1.setText(dc.showSubtask(Integer
-								.parseInt(subtaskNumberTextField111.getText())));
+						jTextArea1.setText(dc.showSubtask(Integer.parseInt(subtaskNumberTextField111.getText())));
 						feedbackTextArea11.setText("Success!");
 					}
 				}
@@ -1516,8 +1455,7 @@ public class TabSolver extends JFrame {
 	private JTextField getSubtaskNumberTextField111() {
 		if (subtaskNumberTextField111 == null) {
 			subtaskNumberTextField111 = new JTextField();
-			subtaskNumberTextField111
-					.setBounds(new Rectangle(118, 247, 89, 20));
+			subtaskNumberTextField111.setBounds(new Rectangle(118, 247, 89, 20));
 		}
 		return subtaskNumberTextField111;
 	}
@@ -1533,11 +1471,9 @@ public class TabSolver extends JFrame {
 			showsubtaskbidButtonTS.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (subtaskBidNbTextField1111.getText().equals("")) {
-						feedbackTextArea11
-								.setText("Must enter a Subtask Bid ID number.");
+						feedbackTextArea11.setText("Must enter a Subtask Bid ID number.");
 					} else {
-						jTextArea1.setText(dc.showSubtaskBid(Integer
-								.parseInt(subtaskBidNbTextField1111.getText())));
+						jTextArea1.setText(dc.showSubtaskBid(Integer.parseInt(subtaskBidNbTextField1111.getText())));
 						feedbackTextArea11.setText("Success!");
 					}
 				}
@@ -1557,8 +1493,7 @@ public class TabSolver extends JFrame {
 	private JTextField getSubtaskBidNbTextField1111() {
 		if (subtaskBidNbTextField1111 == null) {
 			subtaskBidNbTextField1111 = new JTextField();
-			subtaskBidNbTextField1111
-					.setBounds(new Rectangle(118, 343, 89, 20));
+			subtaskBidNbTextField1111.setBounds(new Rectangle(118, 343, 89, 20));
 		}
 		return subtaskBidNbTextField1111;
 	}
@@ -1587,14 +1522,10 @@ public class TabSolver extends JFrame {
 			enterSubtskBidButtonTS = new JButton();
 			enterSubtskBidButtonTS.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					if (subtaskNumberTextField1111.getText().equals("")
-							|| OfferTextField1.getText().equals("")) {
+					if (subtaskNumberTextField1111.getText().equals("") || OfferTextField1.getText().equals("")) {
 						feedbackTextArea11.setText("Not Enough information.");
 					} else {
-						String display = dc.makeSubtaskBid(
-								Integer.parseInt(subtaskNumberTextField1111
-										.getText()), Integer
-										.parseInt(OfferTextField1.getText()));
+						String display = dc.makeSubtaskBid(Integer.parseInt(subtaskNumberTextField1111.getText()), Integer.parseInt(OfferTextField1.getText()));
 						jTextArea1.setText(display);
 						feedbackTextArea11.setText(display);
 					}
@@ -1615,8 +1546,7 @@ public class TabSolver extends JFrame {
 	private JTextField getSubtaskNumberTextField1111() {
 		if (subtaskNumberTextField1111 == null) {
 			subtaskNumberTextField1111 = new JTextField();
-			subtaskNumberTextField1111
-					.setBounds(new Rectangle(699, 352, 99, 20));
+			subtaskNumberTextField1111.setBounds(new Rectangle(699, 352, 99, 20));
 		}
 		return subtaskNumberTextField1111;
 	}
@@ -1710,6 +1640,27 @@ public class TabSolver extends JFrame {
 		this.dc = dc;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		initialize();
+		
+		// tabs: 0-towner,1-tmanager,2-tsolver,3-hr,4-admin
+		switch (dc.getCurrentUser().getSecurityLayer()) {
+		case 99: // task solver
+			hideAllTabsButOne(2);
+			break;
+		case 75: // task manager
+			hideAllTabsButOne(1);
+			break;
+		case 50: // task owner
+			hideAllTabsButOne(0);
+			break;
+		case 25: // hr
+			hideAllTabsButOne(3);
+			break;
+		case 0: // admin, all tabs visible
+			break;
+		default: // anybody else
+			hideAllTabsButOne(-1); // hides all tabs
+			break;
+		}
 	}
 
 	/**
