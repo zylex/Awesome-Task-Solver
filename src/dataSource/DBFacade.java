@@ -26,7 +26,6 @@ public class DBFacade {
 	private SubtaskAuctionMapper sam;
 	private TaskAuctionMapper tam;
 	private UsersMapper um;
-	private ConversionMapper cm;
 	private String user = "knjofr8";
 	private String pass = "John";
 
@@ -40,7 +39,6 @@ public class DBFacade {
 		sam = new SubtaskAuctionMapper();
 		tam = new TaskAuctionMapper();
 		um = new UsersMapper();
-		cm = new ConversionMapper();
 	}
 
 	/**
@@ -314,61 +312,6 @@ public class DBFacade {
 			releaseConnection(con);
 		}
 		return status;
-	}
-
-	/**
-	 * @param conversion
-	 *            The 6 letter name of the conversion we are trying to save.
-	 * @param rate
-	 *            The floating point number that is the conversion rate.
-	 * @return Whether the save was successful or not.
-	 */
-	public boolean saveNewConversion(String conversion, float rate) {
-		boolean status = false;
-		Connection con = null;
-		try {
-			con = getConnection();
-			status = cm.saveNewConversion(conversion, rate, con);
-		} finally {
-			releaseConnection(con);
-		}
-		return status;
-	}
-
-	/**
-	 * @param conversion
-	 *            The 6 letter name of the conversion we are trying to edit.
-	 * @param rate
-	 *            The floating point number that is the conversion rate.
-	 * @return Whether the edit was successful or not.
-	 */
-	public boolean editConversion(String conversion, float rate) {
-		boolean status = false;
-		Connection con = null;
-		try {
-			con = getConnection();
-			status = cm.editConversion(conversion, rate, con);
-		} finally {
-			releaseConnection(con);
-		}
-		return status;
-	}
-
-	/**
-	 * @param conversion
-	 *            Name of the conversion we wish to retrieve
-	 * @return The floating point number that is the conversion rate.
-	 */
-	public float getConversionRate(String conversion) {
-		float rate = 0;
-		Connection con = null;
-		try {
-			con = getConnection();
-			rate = cm.getConversionRate(conversion, con);
-		} finally {
-			releaseConnection(con);
-		}
-		return rate;
 	}
 
 	/**

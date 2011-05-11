@@ -8,7 +8,6 @@ DROP TABLE Taskbids CASCADE CONSTRAINTS;
 DROP TABLE Tasks CASCADE CONSTRAINTS;
 DROP TABLE Users CASCADE CONSTRAINTS;
 DROP TABLE Locations CASCADE CONSTRAINTS;
-DROP TABLE Conversions CASCADE CONSTRAINTS;
 
 -- Drop sequences
 DROP sequence SubtaskIdSeq;
@@ -82,12 +81,6 @@ subtaskBidId NUMBER(11) NOT NULL REFERENCES SubtaskBids,
 userId NUMBER(11) NOT NULL REFERENCES Users, -- task solver 
 PRIMARY KEY (subtaskBidId, userID)
 );
-
-CREATE TABLE Conversions (
-Conversion CHAR(6) NOT NULL,
-Rate NUMBER(5,5)
-);
-
 
 -- create sequences
 CREATE sequence SubtaskIdSeq;
