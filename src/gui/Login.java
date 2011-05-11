@@ -14,6 +14,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
 
 import domain.DomainController;
+
 /**
  * @author Anthony Arena, Jonathan Anastasiou, John Frederiksen, Daniel Spitzer
  */
@@ -31,6 +32,7 @@ public class Login extends JFrame {
 	private JLabel lPassword;
 	private JPasswordField passwordField;
 	private DomainController dc;
+	private JButton button;
 
 	/**
 	 * Create the frame.
@@ -56,37 +58,42 @@ public class Login extends JFrame {
 		lPassword.setBounds(12, 58, 114, 15);
 		contentPane.add(lPassword);
 
-		final JButton button = new JButton("OK");
+		button = new JButton("OK");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				contentPane.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-				button.setEnabled(false);
-
+				disableForm();
 				if (textFieldLogin.getText().equals("") || passwordField.getPassword().length < 1) {
-					JOptionPane.showMessageDialog(null, "Not enough information entered!", "Login Info", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "You have to fill out all fields!", "Login Error", JOptionPane.ERROR_MESSAGE);
+					resetForm();
 				} else {
-					int userId = Integer.parseInt(textFieldLogin.getText());
-					String pass = "";
-					char[] p = passwordField.getPassword();
-					for (int i = 0; i < p.length; i++) {
-						pass += p[i];
-						p[i] = 0; // security
-					}
-					if (dc.login(userId, pass)) {
-						contentPane.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-						dc.initAfterLogin();
-						dc.setCurrentUser(dc.getUser(userId));
-						setVisible(false);
-						try {
-							TabSolver ts = new TabSolver(dc);
-							ts.setVisible(true);
-						} catch (Exception e) {
-							e.printStackTrace();
+					try {
+						int userId = Integer.parseInt(textFieldLogin.getText());
+						String pass = "";
+						char[] p = passwordField.getPassword();
+						for (int i = 0; i < p.length; i++) {
+							pass += p[i];
+							p[i] = 0; // security
 						}
-					} else {
-						button.setEnabled(true);
-						JOptionPane.showMessageDialog(null, "Login information is incorrect!", "Login Info", JOptionPane.ERROR_MESSAGE);
+						if (dc.login(userId, pass)) {
+							resetForm();
+							dc.initAfterLogin();
+							dc.setCurrentUser(dc.getUser(userId));
+							setVisible(false);
+							try {
+								TabSolver ts = new TabSolver(dc);
+								ts.setVisible(true);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						} else {
+							JOptionPane.showMessageDialog(null, "Login information is incorrect!", "Login Error", JOptionPane.ERROR_MESSAGE);
+							resetForm();
+						}
+					} catch (NumberFormatException e) {
+						JOptionPane.showMessageDialog(null, "UserID has to be a number!", "Login Info", JOptionPane.ERROR_MESSAGE);
+						resetForm();
 					}
+
 				}
 			}
 		});
@@ -96,6 +103,29 @@ public class Login extends JFrame {
 		passwordField = new JPasswordField();
 		passwordField.setBounds(12, 85, 114, 19);
 		contentPane.add(passwordField);
+	}
+	
+	public void disableForm() {
+		contentPane.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+		passwordField.setEditable(false);
+		textFieldLogin.setEditable(false);
+		redrawEverything();
+	}
+
+	public void resetForm() {
+		contentPane.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+		passwordField.setEditable(true);
+		textFieldLogin.setEditable(true);
+		passwordField.setText("");
+		textFieldLogin.setText("");
+		redrawEverything();
+	}
+	
+	public void redrawEverything() {
+		passwordField.revalidate();
+		textFieldLogin.revalidate();
+		button.revalidate();
+		contentPane.revalidate();
 	}
 
 	public void setDc(DomainController dc) {

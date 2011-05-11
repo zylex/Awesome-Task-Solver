@@ -111,13 +111,15 @@ public class DomainController {
 	 */
 	public boolean login(int userId, String password) {
 		boolean status = false;
-		Users u = db.getUser(userId);
+		Users u = getUser(userId);
 		// check if the user exists.
-		if (u == null)
+		if (u == null) {
 			return false;
+		}
 		// check if the password matches the users.
-		if (password.equals(u.getPassword()))
+		if (password.equals(u.getPassword())) {
 			status = true;
+		}
 		return status;
 	}
 
