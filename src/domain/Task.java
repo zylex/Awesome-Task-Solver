@@ -116,7 +116,7 @@ public class Task implements Comparable<Task> {
 	}
 
 	/**
-	 * @return
+	 * @return double indicating the percentage of the Task that has been completed.
 	 */
 	public double getCompleted() {
 		if (subtasks == null || subtasks.size() == 0)

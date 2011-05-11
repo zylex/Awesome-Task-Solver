@@ -3,7 +3,6 @@ package test;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -105,27 +104,23 @@ public class SubtaskAuctionMapperTest extends TestCase {
 		assertTrue("Fail in GetSubtaskAuctionMatch 6",
 				s.getSubtaskId() == 800013); // last value OK
 	}
-	
-	@Test
-	public void testGetSubtaskAuctionFail() {
-		try {
-			Statement st = con.createStatement();
-			// empty tables
-			st.addBatch("DELETE FROM groups");
-			st.addBatch("DELETE FROM subtaskbids");
-			st.addBatch("DELETE FROM subtasks");
-			st.addBatch("DELETE FROM taskbids");
-			st.addBatch("DELETE FROM tasks");
-			st.addBatch("DELETE FROM users");
-			st.addBatch("DELETE FROM locations");
-			st.executeBatch();
-		} catch (Exception e) {
-			System.out.println("Exception in GetSubtaskAuctionFail");
-		}
-	}	
+
+	/**
+	 * coding stop has taken effect, the following test, that is commented out,
+	 * is not completed.
+	 */
+	/*
+	 * @Test public void testGetSubtaskAuctionFail() { try { Statement st =
+	 * con.createStatement(); // empty tables st.addBatch("DELETE FROM groups");
+	 * st.addBatch("DELETE FROM subtaskbids");
+	 * st.addBatch("DELETE FROM subtasks"); st.addBatch("DELETE FROM taskbids");
+	 * st.addBatch("DELETE FROM tasks"); st.addBatch("DELETE FROM users");
+	 * st.addBatch("DELETE FROM locations"); st.executeBatch(); } catch
+	 * (Exception e) { System.out.println("Exception in GetSubtaskAuctionFail");
+	 * } }
+	 */
 
 	@Test
-
 	public void testSelectWinningSubtaskBidTrue() {
 		Subtask s = sam.getSubtask(800011, con);
 		assertTrue("Fail in SelectWinningSubtaskBidTrue 1", s != null); // return

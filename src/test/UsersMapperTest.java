@@ -158,11 +158,15 @@ public class UsersMapperTest extends TestCase {
 																			// value
 																			// null?
 	}
-	
-	@Test public void testGetAllUsers() {
+
+	@Test
+	public void testGetAllUsers() {
 		ArrayList<Users> u = um.getAllUsers(con);
-		assertTrue("Fail in GetAllUsers 1", u != null); // return value not null?
-		assertTrue("Fail in GetAllUsers 2", u.get(1).getUserId() == 2); // return value OK?
+		assertTrue("Fail in GetAllUsers 1", u != null); // return value not
+														// null?
+		assertTrue("Fail in GetAllUsers 2", u.get(1).getUserId() == 2); // return
+																		// value
+																		// OK?
 	}
 
 	// === Connection specifics
